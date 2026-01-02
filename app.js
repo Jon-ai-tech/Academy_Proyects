@@ -1,26 +1,26 @@
-/**
- * Vanguard Crux | Financial Modeling Core
- * v2.0-stable 
- */
+// ====================================
+// Business Case Analyzer Pro - Main JS
+// Complete Financial Analysis Engine
+// ====================================
 
-// ==========================================
-// 1. CONFIGURATION & STATE
-// ==========================================
-
+// Global state
 let currentLanguage = 'es';
 let projectData = null;
 let strategicData = null;
-let charts = { cashflow: null, roi: null, scenarios: null };
+let charts = {
+    cashflow: null,
+    roi: null,
+    scenarios: null
+};
 
-// ==========================================
-// 2. LOCALIZATION RESOURCES (AUDITED)
-// ==========================================
-
-const LOCALE_RESOURCES = {
+// Translation System
+const translations = {
     en: {
-        // --- Structure & Headers ---
+        // Header
         'header-title': 'Business Case Analyzer Pro',
         'header-subtitle': 'Professional Financial Analysis & ROI Calculator',
+        
+        // Section Titles
         'section-strategic': 'Strategic Analysis',
         'strategic-description': 'Start by defining the strategic foundation of your business case. Our AI will analyze the viability and provide insights.',
         'section-dashboard': 'Financial Dashboard',
@@ -29,744 +29,2032 @@ const LOCALE_RESOURCES = {
         'section-scenarios': 'Scenario Comparison',
         'section-recommendations': 'Smart Recommendations',
         'section-export': 'Export Report',
-
-        // --- Subsections (Calculator) ---
+        
+        // Subsections
         'subsection-revenue': 'Revenue Projections',
         'subsection-costs': 'Cost Projections',
         'subsection-scenarios': 'Scenario Analysis',
-
-        // --- Metric Cards ---
-        'metric-label-roi': 'ROI (Return on Investment)',
-        'metric-label-npv': 'NPV (Net Present Value)',
-        'metric-label-payback': 'Payback Period',
-        'metric-label-irr': 'IRR (Internal Rate of Return)',
-        // Initial states
-        'roi-status': 'Enter data to calculate',
-        'npv-status': 'Discounted cash flow',
-        'payback-status': 'Months to recover investment',
-        'irr-status': 'Annualized return rate',
-
-        // --- Strategic Form ---
+        
+        // Form Labels - Strategic
         'label-stratProjectName': 'Project Name',
-        'ph-stratProjectName': 'e.g., AI-Powered Customer Support Automation',
         'label-problemOpportunity': 'Problem/Opportunity Identified',
-        'ph-problemOpportunity': 'e.g., Our support team spends 10 hours/week manually classifying tickets...',
-        'label-proposedSolution': 'Proposed Solution',
-        'ph-proposedSolution': 'e.g., Implement an AI triage agent for instant ticket classification...',
+        'label-proposedSolution': 'Proposed Solution (with or without AI)',
         'label-successMetrics': 'Success Metrics / ROI',
-        'ph-successMetrics': 'e.g., Reduce classification time by 90% in Q1...',
-        'analysis-title': 'Strategic Analysis Result',
-
-        // --- Financial Form ---
+        
+        // Form Labels - Financial
         'label-projectName': 'Project Name',
-        'ph-projectName': 'e.g., Digital Transformation',
         'label-initialInvestment': 'Initial Investment ($)',
         'label-discountRate': 'Discount Rate (%)',
         'label-projectDuration': 'Project Duration (months)',
         'label-yearlyRevenue': 'Annual Revenue Increase ($)',
-        'label-revenueGrowth': 'Revenue Growth Rate (%)',
+        'label-revenueGrowth': 'Revenue Growth Rate (% yearly)',
         'label-operatingCosts': 'Annual Operating Costs ($)',
         'label-maintenanceCosts': 'Annual Maintenance Costs ($)',
         'label-bestCaseMultiplier': 'Best Case Multiplier',
         'label-worstCaseMultiplier': 'Worst Case Multiplier',
-
-        // --- Scenario Cards ---
-        'title-expected': '📊 Expected Case',
-        'title-best': '🚀 Best Case',
-        'title-worst': '⚠️ Worst Case',
-        'label-expected-roi': 'ROI:', 'label-expected-npv': 'NPV:', 'label-expected-payback': 'Payback:',
-        'label-best-roi': 'ROI:', 'label-best-npv': 'NPV:', 'label-best-payback': 'Payback:',
-        'label-worst-roi': 'ROI:', 'label-worst-npv': 'NPV:', 'label-worst-payback': 'Payback:',
-
-        // --- Buttons & UI Elements ---
+        
+        // Buttons
         'btn-generate-analysis': 'Generate Analysis',
         'btn-continue-financial': 'Continue to Financial Projection',
         'btn-back-step1': '← Back to Strategic Analysis',
         'btn-calculate': 'Calculate Analysis',
         'btn-reset': 'Reset Form',
         'btn-export': 'Export Full Report to PDF',
-        'export-description': 'Generate a comprehensive PDF report with all metrics, charts and recommendations.',
-        'default-recommendations': 'Complete the form and calculate to receive smart recommendations based on your business case.',
-        'progress-title': 'Business Case Quality Score',
-
-        // --- Tabs & Charts ---
+        'analysis-title': 'Strategic Analysis Result',
+        
+        // Tabs
         'tab-cashflow': 'Cash Flow Over Time',
         'tab-roi': 'ROI Comparison',
         'tab-scenarios': 'Scenario Analysis',
-        'chart-monthly-cashflow': 'Net Monthly Flow',
-        'chart-cumulative-cashflow': 'Cumulative Position',
-        'scenario-expected': 'Base Case',
-        'scenario-best': 'Upside Case',
-        'scenario-worst': 'Downside Case',
-        'unit-months': 'mo',
-
-        // --- Dynamic Status ---
-        'status-positive-return': '✓ Positive Return',
-        'status-negative-return': '✗ Negative Return',
-        'status-creates-value': '✓ Creates Value',
-        'status-destroys-value': '✗ Destroys Value',
-        'viability-high': 'HIGH VIABILITY - Proceed to Financials',
-        'viability-review': 'REVIEW NEEDED - Refine Strategy'
+        
+        // Metrics
+        'metric-roi': 'ROI (Return on Investment)',
+        'metric-npv': 'NPV (Net Present Value)',
+        'metric-payback': 'Payback Period',
+        'metric-irr': 'IRR (Internal Rate of Return)',
+        
+        // Scenario Cards
+        'scenario-expected': 'Expected Case',
+        'scenario-best': 'Best Case',
+        'scenario-worst': 'Worst Case',
+        'scenario-roi-label': 'ROI:',
+        'scenario-npv-label': 'NPV:',
+        'scenario-payback-label': 'Payback:',
+        
+        // Messages
+        'export-description': 'Generate a comprehensive PDF report with all metrics, charts and recommendations.',
+        'default-recommendations': 'Complete the form and calculate to receive intelligent recommendations based on your business case analysis.',
+        'loading': 'Analyzing...',
+        'success-message': '✓ Analysis completed successfully! Review the metrics and recommendations below.',
+        
+        // Chart Labels
+        'chart-monthly-cashflow': 'Monthly Cash Flow',
+        'chart-cumulative-cashflow': 'Cumulative Cash Flow',
+        'chart-expected-roi': 'Expected ROI',
+        'chart-best-roi': 'Best Case ROI',
+        'chart-worst-roi': 'Worst Case ROI',
+        
+        // Metric Status
+        'status-positive-return': '✓ Positive return',
+        'status-negative-return': '✗ Negative return',
+        'status-creates-value': '✓ Creates value',
+        'status-destroys-value': '✗ Destroys value',
+        'status-discounted-cashflow': 'Discounted cash flow',
+        'status-months-to-recover': 'months to recover investment',
+        'status-annualized-return': 'Annualized return rate',
+        'status-enter-data': 'Enter data to calculate',
+        
+        // Units
+        'unit-months': 'months',
+        'unit-years': 'years',
+        
+        // Progress Indicator
+        'progress-title': 'Business Case Quality Score',
+        
+        // Placeholders - Strategic Form
+        'placeholder-stratProjectName': 'e.g., AI-Powered Customer Support Automation',
+        'placeholder-problemOpportunity': 'e.g., Our support team spends 10 hours/week manually classifying tickets, causing 4-hour delays and 15% customer dissatisfaction...',
+        'placeholder-proposedSolution': 'e.g., Implement an AI triage agent for instant ticket classification. Phase 1: Auto-categorization and priority assessment. Out of scope: Automated responses...',
+        'placeholder-successMetrics': 'e.g., Reduce classification time by 90% in Q1 (10h to 1h/week), decrease first response time by 50%, improve satisfaction by 5 points...',
+        
+        // Placeholders - Financial Form
+        'placeholder-projectName': 'e.g., Digital Transformation',
+        'placeholder-initialInvestment': '100000',
+        'placeholder-discountRate': '10',
+        'placeholder-projectDuration': '24',
+        'placeholder-yearlyRevenue': '50000',
+        'placeholder-revenueGrowth': '5',
+        'placeholder-operatingCosts': '20000',
+        'placeholder-maintenanceCosts': '5000',
+        'placeholder-bestCaseMultiplier': '1.3',
+        'placeholder-worstCaseMultiplier': '0.7'
     },
     es: {
-        // --- Structure & Headers ---
+        // Header
         'header-title': 'Analizador de Casos de Negocio Pro',
         'header-subtitle': 'Análisis Financiero Profesional y Calculadora de ROI',
+        
+        // Section Titles
         'section-strategic': 'Análisis Estratégico',
-        'strategic-description': 'Comience definiendo la base estratégica de su caso de negocio. El motor analizará la viabilidad.',
+        'strategic-description': 'Comience definiendo la base estratégica de su caso de negocio. Nuestra IA analizará la viabilidad y proporcionará información valiosa.',
         'section-dashboard': 'Panel Financiero',
         'section-project-info': 'Información del Proyecto',
         'section-visual-analysis': 'Análisis Visual',
         'section-scenarios': 'Comparación de Escenarios',
         'section-recommendations': 'Recomendaciones Inteligentes',
         'section-export': 'Exportar Reporte',
-
-        // --- Subsections (Calculator) ---
-        'subsection-revenue': 'Proyección de Ingresos',
-        'subsection-costs': 'Proyección de Costos',
+        
+        // Subsections
+        'subsection-revenue': 'Proyecciones de Ingresos',
+        'subsection-costs': 'Proyecciones de Costos',
         'subsection-scenarios': 'Análisis de Escenarios',
-
-        // --- Metric Cards ---
-        'metric-label-roi': 'ROI (Retorno de Inversión)',
-        'metric-label-npv': 'VPN (Valor Presente Neto)',
-        'metric-label-payback': 'Período de Recuperación',
-        'metric-label-irr': 'TIR (Tasa Interna de Retorno)',
-        // Initial states
-        'roi-status': 'Ingrese datos para calcular',
-        'npv-status': 'Flujo de caja descontado',
-        'payback-status': 'Meses para recuperar inversión',
-        'irr-status': 'Tasa de retorno anualizada',
-
-        // --- Strategic Form ---
+        
+        // Form Labels - Strategic
         'label-stratProjectName': 'Nombre del Proyecto',
-        'ph-stratProjectName': 'ej., Automatización de soporte al cliente basada en IA',
-        'label-problemOpportunity': 'Problema/Oportunidad',
-        'ph-problemOpportunity': 'ej., Nuestro equipo de soporte pasa 10 horas/semana clasificando tickets...',
-        'label-proposedSolution': 'Solución Propuesta',
-        'ph-proposedSolution': 'ej., Implementar un agente de clasificación de tickets basado en IA...',
+        'label-problemOpportunity': 'Problema/Oportunidad Identificada',
+        'label-proposedSolution': 'Solución Propuesta (con o sin IA)',
         'label-successMetrics': 'Métricas de Éxito / ROI',
-        'ph-successMetrics': 'ej., Reducir el tiempo de clasificación en un 90% en Q1...',
-        'analysis-title': 'Resultado del Análisis Estratégico',
-
-        // --- Financial Form ---
+        
+        // Form Labels - Financial
         'label-projectName': 'Nombre del Proyecto',
-        'ph-projectName': 'ej., Transformación Digital',
         'label-initialInvestment': 'Inversión Inicial ($)',
         'label-discountRate': 'Tasa de Descuento (%)',
         'label-projectDuration': 'Duración del Proyecto (meses)',
-        'label-yearlyRevenue': 'Incremento de Ingresos ($)',
-        'label-revenueGrowth': 'Tasa Crecimiento Ingresos (%)',
+        'label-yearlyRevenue': 'Incremento de Ingresos Anuales ($)',
+        'label-revenueGrowth': 'Tasa de Crecimiento de Ingresos (% anual)',
         'label-operatingCosts': 'Costos Operativos Anuales ($)',
-        'label-maintenanceCosts': 'Costos Mantenimiento Anuales ($)',
+        'label-maintenanceCosts': 'Costos de Mantenimiento Anuales ($)',
         'label-bestCaseMultiplier': 'Multiplicador Mejor Caso',
         'label-worstCaseMultiplier': 'Multiplicador Peor Caso',
-
-        // --- Scenario Cards ---
-        'title-expected': '📊 Caso Esperado',
-        'title-best': '🚀 Caso Optimista',
-        'title-worst': '⚠️ Caso Pesimista',
-        'label-expected-roi': 'ROI:', 'label-expected-npv': 'VPN:', 'label-expected-payback': 'Recup.:',
-        'label-best-roi': 'ROI:', 'label-best-npv': 'VPN:', 'label-best-payback': 'Recup.:',
-        'label-worst-roi': 'ROI:', 'label-worst-npv': 'VPN:', 'label-worst-payback': 'Recup.:',
-
-        // --- Buttons & UI Elements ---
+        
+        // Buttons
         'btn-generate-analysis': 'Generar Análisis',
-        'btn-continue-financial': 'Continuar a Proyección Financiera',
-        'btn-back-step1': '← Volver a Análisis Estratégico',
+        'btn-continue-financial': 'Continuar a la Proyección Financiera',
+        'btn-back-step1': '← Volver al Análisis Estratégico',
         'btn-calculate': 'Calcular Análisis',
         'btn-reset': 'Reiniciar Formulario',
-        'btn-export': 'Exportar Reporte PDF',
-        'export-description': 'Genere un reporte PDF completo con todas las métricas, gráficos y recomendaciones.',
-        'default-recommendations': 'Complete el formulario y calcule para recibir recomendaciones inteligentes basadas en su análisis.',
-        'progress-title': 'Puntaje de Calidad del Caso',
-
-        // --- Tabs & Charts ---
+        'btn-export': 'Exportar Reporte Completo a PDF',
+        'analysis-title': 'Resultado del Análisis Estratégico',
+        
+        // Tabs
         'tab-cashflow': 'Flujo de Caja en el Tiempo',
         'tab-roi': 'Comparación de ROI',
         'tab-scenarios': 'Análisis de Escenarios',
-        'chart-monthly-cashflow': 'Flujo Mensual Neto',
-        'chart-cumulative-cashflow': 'Posición Acumulada',
-        'scenario-expected': 'Caso Base',
-        'scenario-best': 'Caso Optimista',
-        'scenario-worst': 'Caso Pesimista',
+        
+        // Metrics
+        'metric-roi': 'ROI (Retorno de Inversión)',
+        'metric-npv': 'VPN (Valor Presente Neto)',
+        'metric-payback': 'Período de Recuperación',
+        'metric-irr': 'TIR (Tasa Interna de Retorno)',
+        
+        // Scenario Cards
+        'scenario-expected': 'Caso Esperado',
+        'scenario-best': 'Mejor Caso',
+        'scenario-worst': 'Peor Caso',
+        'scenario-roi-label': 'ROI:',
+        'scenario-npv-label': 'VPN:',
+        'scenario-payback-label': 'Recuperación:',
+        
+        // Messages
+        'export-description': 'Genere un reporte PDF completo con todas las métricas, gráficos y recomendaciones.',
+        'default-recommendations': 'Complete el formulario y calcule para recibir recomendaciones inteligentes basadas en su análisis de caso de negocio.',
+        'loading': 'Analizando...',
+        'success-message': '✓ ¡Análisis completado exitosamente! Revise las métricas y recomendaciones a continuación.',
+        
+        // Chart Labels
+        'chart-monthly-cashflow': 'Flujo de Caja Mensual',
+        'chart-cumulative-cashflow': 'Flujo de Caja Acumulado',
+        'chart-expected-roi': 'ROI Esperado',
+        'chart-best-roi': 'ROI Mejor Caso',
+        'chart-worst-roi': 'ROI Peor Caso',
+        
+        // Metric Status
+        'status-positive-return': '✓ Retorno positivo',
+        'status-negative-return': '✗ Retorno negativo',
+        'status-creates-value': '✓ Genera valor',
+        'status-destroys-value': '✗ Destruye valor',
+        'status-discounted-cashflow': 'Flujo de caja descontado',
+        'status-months-to-recover': 'meses para recuperar inversión',
+        'status-annualized-return': 'Tasa de retorno anualizada',
+        'status-enter-data': 'Ingrese datos para calcular',
+        
+        // Units
         'unit-months': 'meses',
-
-        // --- Dynamic Status ---
-        'status-positive-return': '✓ Retorno Positivo',
-        'status-negative-return': '✗ Retorno Negativo',
-        'status-creates-value': '✓ Genera Valor',
-        'status-destroys-value': '✗ Destruye Valor',
-        'viability-high': 'ALTA VIABILIDAD - Proceder a Financiero',
-        'viability-review': 'REVISIÓN REQUERIDA - Refinar Estrategia'
+        'unit-years': 'años',
+        
+        // Progress Indicator
+        'progress-title': 'Puntuación de Calidad del Business Case',
+        
+        // Placeholders - Strategic Form
+        'placeholder-stratProjectName': 'ej., Automatización de soporte al cliente basada en IA',
+        'placeholder-problemOpportunity': 'ej., Nuestro equipo de soporte pasa 10 horas/semana clasificando tickets manualmente, causando retrasos de 4 horas y un 15% de insatisfacción del cliente...',
+        'placeholder-proposedSolution': 'ej., Implementar un agente de clasificación de tickets basado en IA para clasificación instantánea. Fase 1: Categorización automática y evaluación de prioridades. Fuera de alcance: Respuestas automáticas...',
+        'placeholder-successMetrics': 'ej., Reducir el tiempo de clasificación en un 90% en Q1 (10h a 1h/semana), disminuir el tiempo de primera respuesta en un 50%, mejorar la satisfacción en 5 puntos...',
+        
+        // Placeholders - Financial Form
+        'placeholder-projectName': 'ej., Transformación Digital',
+        'placeholder-initialInvestment': '100000',
+        'placeholder-discountRate': '10',
+        'placeholder-projectDuration': '24',
+        'placeholder-yearlyRevenue': '50000',
+        'placeholder-revenueGrowth': '5',
+        'placeholder-operatingCosts': '20000',
+        'placeholder-maintenanceCosts': '5000',
+        'placeholder-bestCaseMultiplier': '1.3',
+        'placeholder-worstCaseMultiplier': '0.7'
     },
     pt: {
-        // --- Structure & Headers ---
+        // Header
         'header-title': 'Analisador de Casos de Negócio Pro',
         'header-subtitle': 'Análise Financeira Profissional e Calculadora de ROI',
+        
+        // Section Titles
         'section-strategic': 'Análise Estratégica',
-        'strategic-description': 'Comece definindo a base estratégica do seu caso de negócio.',
+        'strategic-description': 'Comece definindo a base estratégica do seu caso de negócio. Nossa IA analisará a viabilidade e fornecerá insights.',
         'section-dashboard': 'Painel Financeiro',
         'section-project-info': 'Informações do Projeto',
         'section-visual-analysis': 'Análise Visual',
         'section-scenarios': 'Comparação de Cenários',
         'section-recommendations': 'Recomendações Inteligentes',
         'section-export': 'Exportar Relatório',
-
-        // --- Subsections (Calculator) ---
-        'subsection-revenue': 'Projeção de Receita',
-        'subsection-costs': 'Projeção de Custos',
+        
+        // Subsections
+        'subsection-revenue': 'Projeções de Receita',
+        'subsection-costs': 'Projeções de Custos',
         'subsection-scenarios': 'Análise de Cenários',
-
-        // --- Metric Cards ---
-        'metric-label-roi': 'ROI (Retorno sobre Investimento)',
-        'metric-label-npv': 'VPL (Valor Presente Líquido)',
-        'metric-label-payback': 'Payback',
-        'metric-label-irr': 'TIR (Taxa Interna de Retorno)',
-        // Initial states
-        'roi-status': 'Insira dados para calcular',
-        'npv-status': 'Fluxo de caixa descontado',
-        'payback-status': 'Meses para recuperar investimento',
-        'irr-status': 'Taxa de retorno anualizada',
-
-        // --- Strategic Form ---
+        
+        // Form Labels - Strategic
         'label-stratProjectName': 'Nome do Projeto',
-        'ph-stratProjectName': 'ex., Automação de suporte ao cliente',
-        'label-problemOpportunity': 'Problema/Oportunidade',
-        'ph-problemOpportunity': 'ex., Nossa equipe gasta 10 horas/semana...',
-        'label-proposedSolution': 'Solução Proposta',
-        'ph-proposedSolution': 'ex., Implementar um agente de triagem...',
+        'label-problemOpportunity': 'Problema/Oportunidade Identificada',
+        'label-proposedSolution': 'Solução Proposta (com ou sem IA)',
         'label-successMetrics': 'Métricas de Sucesso / ROI',
-        'ph-successMetrics': 'ex., Reduzir o tempo de classificação em 90%...',
-        'analysis-title': 'Resultado da Análise Estratégica',
-
-        // --- Financial Form ---
+        
+        // Form Labels - Financial
         'label-projectName': 'Nome do Projeto',
-        'ph-projectName': 'ex., Transformação Digital',
         'label-initialInvestment': 'Investimento Inicial ($)',
         'label-discountRate': 'Taxa de Desconto (%)',
         'label-projectDuration': 'Duração do Projeto (meses)',
         'label-yearlyRevenue': 'Aumento de Receita Anual ($)',
-        'label-revenueGrowth': 'Taxa de Crescimento (%)',
-        'label-operatingCosts': 'Custos Operacionais ($)',
-        'label-maintenanceCosts': 'Custos de Manutenção ($)',
+        'label-revenueGrowth': 'Taxa de Crescimento de Receita (% anual)',
+        'label-operatingCosts': 'Custos Operacionais Anuais ($)',
+        'label-maintenanceCosts': 'Custos de Manutenção Anuais ($)',
         'label-bestCaseMultiplier': 'Multiplicador Melhor Caso',
         'label-worstCaseMultiplier': 'Multiplicador Pior Caso',
-
-        // --- Scenario Cards ---
-        'title-expected': '📊 Caso Esperado',
-        'title-best': '🚀 Caso Otimista',
-        'title-worst': '⚠️ Caso Pessimista',
-        'label-expected-roi': 'ROI:', 'label-expected-npv': 'VPL:', 'label-expected-payback': 'Payback:',
-        'label-best-roi': 'ROI:', 'label-best-npv': 'VPL:', 'label-best-payback': 'Payback:',
-        'label-worst-roi': 'ROI:', 'label-worst-npv': 'VPL:', 'label-worst-payback': 'Payback:',
-
-        // --- Buttons & UI Elements ---
+        
+        // Buttons
         'btn-generate-analysis': 'Gerar Análise',
-        'btn-continue-financial': 'Continuar para Financeiro',
-        'btn-back-step1': '← Voltar para Estratégico',
+        'btn-continue-financial': 'Continuar para Projeção Financeira',
+        'btn-back-step1': '← Voltar para Análise Estratégica',
         'btn-calculate': 'Calcular Análise',
         'btn-reset': 'Redefinir Formulário',
-        'btn-export': 'Exportar Relatório PDF',
-        'export-description': 'Gere um relatório PDF completo com todas as métricas, gráficos e recomendações.',
-        'default-recommendations': 'Preencha o formulário e calcule para receber recomendações inteligentes.',
-        'progress-title': 'Pontuação de Qualidade',
-
-        // --- Tabs & Charts ---
-        'tab-cashflow': 'Fluxo de Caixa',
+        'btn-export': 'Exportar Relatório Completo em PDF',
+        'analysis-title': 'Resultado da Análise Estratégica',
+        
+        // Tabs
+        'tab-cashflow': 'Fluxo de Caixa ao Longo do Tempo',
         'tab-roi': 'Comparação de ROI',
         'tab-scenarios': 'Análise de Cenários',
-        'chart-monthly-cashflow': 'Fluxo Mensual Líquido',
-        'chart-cumulative-cashflow': 'Posição Acumulada',
-        'scenario-expected': 'Caso Base',
-        'scenario-best': 'Caso Otimista',
-        'scenario-worst': 'Caso Pessimista',
+        
+        // Metrics
+        'metric-roi': 'ROI (Retorno sobre Investimento)',
+        'metric-npv': 'VPL (Valor Presente Líquido)',
+        'metric-payback': 'Período de Retorno',
+        'metric-irr': 'TIR (Taxa Interna de Retorno)',
+        
+        // Scenario Cards
+        'scenario-expected': 'Caso Esperado',
+        'scenario-best': 'Melhor Caso',
+        'scenario-worst': 'Pior Caso',
+        'scenario-roi-label': 'ROI:',
+        'scenario-npv-label': 'VPL:',
+        'scenario-payback-label': 'Retorno:',
+        
+        // Messages
+        'export-description': 'Gere um relatório PDF abrangente com todas as métricas, gráficos e recomendações.',
+        'default-recommendations': 'Complete o formulário e calcule para receber recomendações inteligentes baseadas na análise do seu caso de negócio.',
+        'loading': 'Analisando...',
+        'success-message': '✓ Análise concluída com sucesso! Revise as métricas e recomendações abaixo.',
+        
+        // Chart Labels
+        'chart-monthly-cashflow': 'Fluxo de Caixa Mensal',
+        'chart-cumulative-cashflow': 'Fluxo de Caixa Acumulado',
+        'chart-expected-roi': 'ROI Esperado',
+        'chart-best-roi': 'ROI Melhor Caso',
+        'chart-worst-roi': 'ROI Pior Caso',
+        
+        // Metric Status
+        'status-positive-return': '✓ Retorno positivo',
+        'status-negative-return': '✗ Retorno negativo',
+        'status-creates-value': '✓ Gera valor',
+        'status-destroys-value': '✗ Destrói valor',
+        'status-discounted-cashflow': 'Fluxo de caixa descontado',
+        'status-months-to-recover': 'meses para recuperar investimento',
+        'status-annualized-return': 'Taxa de retorno anualizada',
+        'status-enter-data': 'Insira dados para calcular',
+        
+        // Units
         'unit-months': 'meses',
-
-        // --- Dynamic Status ---
-        'status-positive-return': '✓ Retorno Positivo',
-        'status-negative-return': '✗ Retorno Negativo',
-        'status-creates-value': '✓ Gera Valor',
-        'status-destroys-value': '✗ Destrói Valor',
-        'viability-high': 'ALTA VIABILIDADE - Prosseguir',
-        'viability-review': 'REVISÃO NECESSÁRIA - Refinar'
+        'unit-years': 'anos',
+        
+        // Progress Indicator
+        'progress-title': 'Pontuação de Qualidade do Caso de Negócio',
+        
+        // Placeholders - Strategic Form
+        'placeholder-stratProjectName': 'ex., Automação de suporte ao cliente baseada em IA',
+        'placeholder-problemOpportunity': 'ex., Nossa equipe de suporte gasta 10 horas/semana classificando tickets manualmente, causando atrasos de 4 horas e 15% de insatisfação do cliente...',
+        'placeholder-proposedSolution': 'ex., Implementar um agente de classificação de tickets baseado em IA para classificação instantânea. Fase 1: Categorização automática e avaliação de prioridades. Fora do escopo: Respostas automatizadas...',
+        'placeholder-successMetrics': 'ex., Reduzir o tempo de classificação em 90% no Q1 (10h para 1h/semana), diminuir o tempo de primeira resposta em 50%, melhorar a satisfação em 5 pontos...',
+        
+        // Placeholders - Financial Form
+        'placeholder-projectName': 'ex., Transformação Digital',
+        'placeholder-initialInvestment': '100000',
+        'placeholder-discountRate': '10',
+        'placeholder-projectDuration': '24',
+        'placeholder-yearlyRevenue': '50000',
+        'placeholder-revenueGrowth': '5',
+        'placeholder-operatingCosts': '20000',
+        'placeholder-maintenanceCosts': '5000',
+        'placeholder-bestCaseMultiplier': '1.3',
+        'placeholder-worstCaseMultiplier': '0.7'
     }
 };
 
-const GUIDE_CONTENT = {
-    es: {
-        projectName: { title: "Nombre del Proyecto", content: "<p>Use un nombre orientado a la acción (ej: 'Optimización Logística').</p>" },
-        problemOpportunity: { title: "Problema/Oportunidad", content: "<p>Defina el impacto cuantificable (costo, tiempo, riesgo).</p>" },
-        proposedSolution: { title: "Solución Propuesta", content: "<p>Describa capacidades, no solo tecnología. Defina el alcance Fase 1.</p>" },
-        successMetrics: { title: "Métricas SMART", content: "<p>Defina objetivos específicos, medibles y con plazos.</p>" }
-    },
-    en: {
-        projectName: { title: "Project Name", content: "<p>Use action-oriented naming (e.g., 'Logistics Optimization').</p>" },
-        problemOpportunity: { title: "Problem/Opportunity", content: "<p>Define quantifiable impact (cost, time, risk).</p>" },
-        proposedSolution: { title: "Proposed Solution", content: "<p>Describe capabilities, not just tech. Define Phase 1 scope.</p>" },
-        successMetrics: { title: "SMART Metrics", content: "<p>Define specific, measurable, time-bound goals.</p>" }
-    },
-    pt: {
-        projectName: { title: "Nome do Projeto", content: "<p>Use um nome orientado à ação.</p>" },
-        problemOpportunity: { title: "Problema/Oportunidade", content: "<p>Defina o impacto quantificável.</p>" },
-        proposedSolution: { title: "Solução Proposta", content: "<p>Descreva capacidades. Defina o escopo da Fase 1.</p>" },
-        successMetrics: { title: "Métricas SMART", content: "<p>Defina objetivos específicos e mensuráveis.</p>" }
-    }
-};
-
-// ==========================================
-// 3. CORE ENGINES (Logic Layer)
-// ==========================================
-
-const FinanceEngine = {
-    calcROI: (inv, ret) => inv === 0 ? 0 : ((ret - inv) / inv) * 100,
+// Language Switching Function
+function switchLanguage(lang) {
+    currentLanguage = lang;
+    document.documentElement.lang = lang;
     
-    calcNPV: (flows, rate) => {
-        const r = rate / 100;
-        return flows.reduce((acc, val, i) => acc + (val / Math.pow(1 + r, i + 1)), 0);
-    },
-
-    calcPayback: (inv, flows) => {
-        let cum = -inv;
-        for (let i = 0; i < flows.length; i++) {
-            cum += flows[i];
-            if (cum >= 0) {
-                const prev = cum - flows[i];
-                return i + (-prev / flows[i]);
+    // Update language toggle buttons with Tailwind classes
+    document.getElementById('lang-en').classList.toggle('bg-cyan-500', lang === 'en');
+    document.getElementById('lang-en').classList.toggle('border-cyan-500', lang === 'en');
+    document.getElementById('lang-es').classList.toggle('bg-cyan-500', lang === 'es');
+    document.getElementById('lang-es').classList.toggle('border-cyan-500', lang === 'es');
+    document.getElementById('lang-pt').classList.toggle('bg-cyan-500', lang === 'pt');
+    document.getElementById('lang-pt').classList.toggle('border-cyan-500', lang === 'pt');
+    
+    // Update all translatable elements
+    const t = translations[lang];
+    
+    // Update by ID
+    Object.keys(t).forEach(key => {
+        const element = document.getElementById(key);
+        if (element) {
+            if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                // Don't change input values, only placeholders if needed
+            } else if (element.tagName === 'BUTTON') {
+                element.textContent = t[key];
+            } else {
+                element.textContent = t[key];
             }
         }
-        return flows.length;
-    },
-
-    calcIRR: (flows, guess = 0.1) => {
-        const maxIter = 50, eps = 1e-4;
-        let r = guess;
-        for (let i = 0; i < maxIter; i++) {
-            let npv = 0, d_npv = 0;
-            for (let j = 0; j < flows.length; j++) {
-                const div = Math.pow(1 + r, j);
-                npv += flows[j] / div;
-                d_npv -= (j * flows[j]) / (div * (1 + r));
+    });
+    
+    // Helper function to update placeholders
+    const updatePlaceholders = (fieldIds) => {
+        fieldIds.forEach(fieldId => {
+            const element = document.getElementById(fieldId);
+            const placeholderKey = `placeholder-${fieldId}`;
+            if (element && t[placeholderKey]) {
+                element.placeholder = t[placeholderKey];
             }
-            const newR = r - (npv / d_npv);
-            if (Math.abs(newR - r) < eps) return newR * 100;
-            r = newR;
+        });
+    };
+    
+    // Update placeholders for strategic form
+    updatePlaceholders([
+        'stratProjectName',
+        'problemOpportunity',
+        'proposedSolution',
+        'successMetrics'
+    ]);
+    
+    // Update placeholders for financial form
+    updatePlaceholders([
+        'projectName',
+        'initialInvestment',
+        'discountRate',
+        'projectDuration',
+        'yearlyRevenue',
+        'revenueGrowth',
+        'operatingCosts',
+        'maintenanceCosts',
+        'bestCaseMultiplier',
+        'worstCaseMultiplier'
+    ]);
+    
+    // Update form labels (preserving help icons)
+    const labels = document.querySelectorAll('label[for]');
+    labels.forEach(label => {
+        const forAttr = label.getAttribute('for');
+        const key = `label-${forAttr}`;
+        if (t[key]) {
+            // Find the span with the translatable text
+            const labelSpan = label.querySelector('span[id^="label-"]');
+            if (labelSpan) {
+                labelSpan.textContent = t[key];
+            } else {
+                // Fallback for labels without spans (financial form)
+                const hasAsterisk = label.textContent.includes('*');
+                const hasTooltip = label.querySelector('.tooltip-icon');
+                if (!hasTooltip && !label.querySelector('.help-icon')) {
+                    label.textContent = t[key] + (hasAsterisk ? ' *' : '');
+                }
+            }
         }
-        return r * 100;
+    });
+    
+    // Update tabs
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach((tab, index) => {
+        const tabKeys = ['tab-cashflow', 'tab-roi', 'tab-scenarios'];
+        if (tabKeys[index] && t[tabKeys[index]]) {
+            tab.textContent = t[tabKeys[index]];
+        }
+    });
+    
+    // Update scenario card titles and labels
+    document.getElementById('title-expected').textContent = '📊 ' + t['scenario-expected'];
+    document.getElementById('title-best').textContent = '🚀 ' + t['scenario-best'];
+    document.getElementById('title-worst').textContent = '⚠️ ' + t['scenario-worst'];
+    
+    // Update scenario metric labels
+    document.getElementById('label-expected-roi').textContent = t['scenario-roi-label'];
+    document.getElementById('label-expected-npv').textContent = t['scenario-npv-label'];
+    document.getElementById('label-expected-payback').textContent = t['scenario-payback-label'];
+    document.getElementById('label-best-roi').textContent = t['scenario-roi-label'];
+    document.getElementById('label-best-npv').textContent = t['scenario-npv-label'];
+    document.getElementById('label-best-payback').textContent = t['scenario-payback-label'];
+    document.getElementById('label-worst-roi').textContent = t['scenario-roi-label'];
+    document.getElementById('label-worst-npv').textContent = t['scenario-npv-label'];
+    document.getElementById('label-worst-payback').textContent = t['scenario-payback-label'];
+    
+    // Update metric card labels
+    document.getElementById('metric-label-roi').textContent = t['metric-roi'];
+    document.getElementById('metric-label-npv').textContent = t['metric-npv'];
+    document.getElementById('metric-label-payback').textContent = t['metric-payback'];
+    document.getElementById('metric-label-irr').textContent = t['metric-irr'];
+    
+    // Update metric status if they haven't been calculated yet
+    const roiStatus = document.getElementById('roi-status');
+    if (roiStatus.textContent.includes('Enter data') || roiStatus.textContent.includes('Ingrese datos')) {
+        roiStatus.textContent = t['status-enter-data'];
+        document.getElementById('npv-status').textContent = t['status-discounted-cashflow'];
+        document.getElementById('payback-status').textContent = t['status-months-to-recover'];
+        document.getElementById('irr-status').textContent = t['status-annualized-return'];
+    }
+    
+    // Update default recommendations text
+    const recommendations = document.getElementById('recommendations');
+    if (recommendations && recommendations.children.length === 1 && 
+        recommendations.children[0].tagName === 'P') {
+        recommendations.children[0].textContent = t['default-recommendations'];
+        recommendations.children[0].style.color = 'var(--text-muted)';
+    }
+    
+    // Update strategic description
+    const strategicDesc = document.getElementById('strategic-description');
+    if (strategicDesc) {
+        strategicDesc.textContent = t['strategic-description'];
+    }
+    
+    // Update progress title
+    const progressTitle = document.getElementById('progress-title');
+    if (progressTitle) {
+        progressTitle.textContent = t['progress-title'];
+    }
+    
+    // Re-render progress checklist with new language
+    updateOverallProgress();
+    
+    // Re-render charts if they exist with new labels
+    if (charts.cashflow || charts.roi || charts.scenarios) {
+        // Charts will be updated when recalculating
+    }
+}
+
+// Financial Calculation Functions
+const FinancialCalculator = {
+    // Calculate ROI (Return on Investment)
+    calculateROI(investment, totalReturn) {
+        if (investment === 0) return 0;
+        return ((totalReturn - investment) / investment) * 100;
     },
 
-    analyze: (data) => {
-        const mRev = data.yearlyRevenue / 12;
-        const mCost = (data.operatingCosts + data.maintenanceCosts) / 12;
-        const mGrowth = Math.pow(1 + data.revenueGrowth / 100, 1/12) - 1;
+    // Calculate NPV (Net Present Value)
+    calculateNPV(cashFlows, discountRate) {
+        let npv = 0;
+        for (let i = 0; i < cashFlows.length; i++) {
+            npv += cashFlows[i] / Math.pow(1 + discountRate / 100, i + 1);
+        }
+        return npv;
+    },
+
+    // Calculate Payback Period (in months)
+    calculatePaybackPeriod(initialInvestment, monthlyCashFlows) {
+        let cumulativeCashFlow = -initialInvestment;
+        for (let i = 0; i < monthlyCashFlows.length; i++) {
+            cumulativeCashFlow += monthlyCashFlows[i];
+            if (cumulativeCashFlow >= 0) {
+                // Interpolate to get more precise payback period
+                const previousCumulativeCashFlow = cumulativeCashFlow - monthlyCashFlows[i];
+                const fraction = -previousCumulativeCashFlow / monthlyCashFlows[i];
+                return i + fraction;
+            }
+        }
+        return monthlyCashFlows.length; // Didn't break even within project duration
+    },
+
+    // Calculate IRR (Internal Rate of Return) using Newton-Raphson method
+    calculateIRR(cashFlows, initialGuess = 0.1) {
+        const maxIterations = 100;
+        const tolerance = 0.0001;
+        let rate = initialGuess;
+
+        for (let i = 0; i < maxIterations; i++) {
+            let npv = 0;
+            let dnpv = 0;
+
+            for (let j = 0; j < cashFlows.length; j++) {
+                const denominator = Math.pow(1 + rate, j);
+                npv += cashFlows[j] / denominator;
+                dnpv -= j * cashFlows[j] / (denominator * (1 + rate));
+            }
+
+            const newRate = rate - npv / dnpv;
+            if (Math.abs(newRate - rate) < tolerance) {
+                return newRate * 100; // Convert to percentage
+            }
+            rate = newRate;
+        }
+        return rate * 100;
+    },
+
+    // Generate cash flow projections
+    generateCashFlows(data) {
+        const monthlyRevenue = data.yearlyRevenue / 12;
+        const monthlyCosts = (data.operatingCosts + data.maintenanceCosts) / 12;
+        const monthlyGrowthRate = Math.pow(1 + data.revenueGrowth / 100, 1 / 12) - 1;
         
-        const timeline = [-data.initialInvestment];
-        for (let m = 1; m <= data.projectDuration; m++) {
-            timeline.push((mRev * Math.pow(1 + mGrowth, m - 1)) - mCost);
+        const cashFlows = [];
+        cashFlows.push(-data.initialInvestment); // Initial investment (negative)
+
+        for (let month = 1; month <= data.projectDuration; month++) {
+            const growthFactor = Math.pow(1 + monthlyGrowthRate, month - 1);
+            const revenue = monthlyRevenue * growthFactor;
+            const netCashFlow = revenue - monthlyCosts;
+            cashFlows.push(netCashFlow);
         }
 
-        const operational = timeline.slice(1);
-        const totalRev = operational.reduce((a, b) => a + b, 0);
+        return cashFlows;
+    },
+
+    // Calculate comprehensive metrics
+    calculateMetrics(data) {
+        const cashFlows = this.generateCashFlows(data);
+        const monthlyCashFlows = cashFlows.slice(1); // Exclude initial investment
+        
+        const totalRevenue = monthlyCashFlows.reduce((sum, cf) => sum + cf, 0);
+        const roi = this.calculateROI(data.initialInvestment, totalRevenue);
+        const npv = this.calculateNPV(monthlyCashFlows, data.discountRate);
+        const paybackPeriod = this.calculatePaybackPeriod(data.initialInvestment, monthlyCashFlows);
+        const irr = this.calculateIRR(cashFlows);
 
         return {
-            roi: FinanceEngine.calcROI(data.initialInvestment, totalRev),
-            npv: FinanceEngine.calcNPV(operational, data.discountRate),
-            payback: FinanceEngine.calcPayback(data.initialInvestment, operational),
-            irr: FinanceEngine.calcIRR(timeline),
-            cashFlows: timeline,
-            totalRevenue: totalRev
+            roi,
+            npv,
+            paybackPeriod,
+            irr,
+            cashFlows,
+            totalRevenue
         };
     }
 };
 
-const StrategicScorer = {
-    evaluate: (input) => {
-        const text = `${input.projectName} ${input.problem} ${input.solution} ${input.metrics}`.toLowerCase();
-        const keywords = ['roi', 'efficiency', 'growth', 'ai', 'automate', 'scale', 'cost'];
-        const matches = keywords.filter(k => text.includes(k)).length;
-        const density = Math.min(text.length / 400, 1) * 100;
-        
-        const score = Math.min(Math.floor(70 + (matches * 3) + (density * 0.1)), 98);
-        const isEs = currentLanguage === 'es';
-
-        return {
-            score: score,
-            viability: score,
-            recommendation: score > 80 ? LOCALE_RESOURCES[currentLanguage]['viability-high'] : LOCALE_RESOURCES[currentLanguage]['viability-review'],
-            strengths: [
-                isEs ? 'Alcance definido' : 'Defined scope',
-                matches > 2 ? (isEs ? 'Terminología técnica sólida' : 'Strong technical terminology') : null
-            ].filter(Boolean),
-            weaknesses: [
-                score < 85 ? (isEs ? 'Requiere mayor detalle de ejecución' : 'Execution detail required') : null
-            ].filter(Boolean)
-        };
-    }
-};
-
-// ==========================================
-// 4. UI CONTROLLERS
-// ==========================================
-
+// UI Update Functions
 const UIUpdater = {
-    format: (n, isCurrency = false) => {
-        const loc = currentLanguage === 'es' ? 'es-ES' : 'en-US';
-        if (n === undefined || n === null || isNaN(n)) return "0";
-        return n.toLocaleString(loc, { maximumFractionDigits: isCurrency ? 0 : 2 });
-    },
-
-    updateDashboard: (m) => {
-        document.getElementById('roi-value').textContent = `${UIUpdater.format(m.roi)}%`;
-        document.getElementById('npv-value').textContent = `$${UIUpdater.format(m.npv, true)}`;
-        document.getElementById('payback-value').textContent = m.payback.toFixed(1);
-        document.getElementById('irr-value').textContent = `${UIUpdater.format(m.irr)}%`;
+    updateDashboard(metrics) {
+        const t = translations[currentLanguage];
+        const locale = currentLanguage === 'es' ? 'es-ES' : 'en-US';
         
-        const res = LOCALE_RESOURCES[currentLanguage];
-        document.getElementById('roi-status').textContent = m.roi > 0 ? res['status-positive-return'] : res['status-negative-return'];
-        document.getElementById('npv-status').textContent = m.npv > 0 ? res['status-creates-value'] : res['status-destroys-value'];
+        document.getElementById('roi-value').textContent = metrics.roi.toFixed(2) + '%';
+        document.getElementById('npv-value').textContent = '$' + metrics.npv.toLocaleString(locale, { maximumFractionDigits: 0 });
+        document.getElementById('payback-value').textContent = metrics.paybackPeriod.toFixed(1);
+        document.getElementById('irr-value').textContent = metrics.irr.toFixed(2) + '%';
+
+        // Update status messages with proper translations
+        const roiStatus = document.getElementById('roi-status');
+        const npvStatus = document.getElementById('npv-status');
+        
+        roiStatus.textContent = metrics.roi > 0 ? t['status-positive-return'] : t['status-negative-return'];
+        npvStatus.textContent = metrics.npv > 0 ? t['status-creates-value'] : t['status-destroys-value'];
     },
 
-    updateScenarios: (exp, best, worst) => {
-        const unit = LOCALE_RESOURCES[currentLanguage]['unit-months'];
-        const setCard = (p, d) => {
-            document.getElementById(`${p}-roi`).textContent = `${UIUpdater.format(d.roi)}%`;
-            document.getElementById(`${p}-npv`).textContent = `$${UIUpdater.format(d.npv, true)}`;
-            document.getElementById(`${p}-payback`).textContent = `${d.payback.toFixed(1)} ${unit}`;
-        };
-        setCard('expected', exp);
-        setCard('best', best);
-        setCard('worst', worst);
+    updateScenarioCards(expectedMetrics, bestMetrics, worstMetrics) {
+        const t = translations[currentLanguage];
+        const locale = currentLanguage === 'es' ? 'es-ES' : 'en-US';
+        const unitMonths = ' ' + t['unit-months'];
+        
+        // Expected case
+        document.getElementById('expected-roi').textContent = expectedMetrics.roi.toFixed(2) + '%';
+        document.getElementById('expected-npv').textContent = '$' + expectedMetrics.npv.toLocaleString(locale, { maximumFractionDigits: 0 });
+        document.getElementById('expected-payback').textContent = expectedMetrics.paybackPeriod.toFixed(1) + unitMonths;
+
+        // Best case
+        document.getElementById('best-roi').textContent = bestMetrics.roi.toFixed(2) + '%';
+        document.getElementById('best-npv').textContent = '$' + bestMetrics.npv.toLocaleString(locale, { maximumFractionDigits: 0 });
+        document.getElementById('best-payback').textContent = bestMetrics.paybackPeriod.toFixed(1) + unitMonths;
+
+        // Worst case
+        document.getElementById('worst-roi').textContent = worstMetrics.roi.toFixed(2) + '%';
+        document.getElementById('worst-npv').textContent = '$' + worstMetrics.npv.toLocaleString(locale, { maximumFractionDigits: 0 });
+        document.getElementById('worst-payback').textContent = worstMetrics.paybackPeriod.toFixed(1) + unitMonths;
     },
 
-    toggleLoading: (show) => {
-        const el = document.getElementById('loadingOverlay');
-        if (el) show ? el.classList.remove('hidden') : el.classList.add('hidden');
+    showMessage(type, message) {
+        const messageDiv = document.getElementById('formMessage');
+        messageDiv.className = `alert ${type}`;
+        messageDiv.textContent = message;
+        messageDiv.classList.remove('hidden');
+        
+        setTimeout(() => {
+            messageDiv.classList.add('hidden');
+        }, 5000);
     },
 
-    showMessage: (type, msg) => {
-        const el = document.getElementById('formMessage');
-        if (el) {
-            el.className = `alert ${type}`;
-            el.textContent = msg;
-            el.classList.remove('hidden');
-            setTimeout(() => el.classList.add('hidden'), 4000);
-        }
+    showLoading() {
+        document.getElementById('loadingOverlay').classList.remove('hidden');
+    },
+
+    hideLoading() {
+        document.getElementById('loadingOverlay').classList.add('hidden');
     }
 };
 
+// Chart Management
 const ChartManager = {
-    createCharts: (exp, best, worst, duration) => {
-        if (typeof Chart === 'undefined') return;
-        const res = LOCALE_RESOURCES[currentLanguage];
+    createCashFlowChart(cashFlows, duration) {
+        // Check if Chart.js is available
+        if (typeof Chart === 'undefined') {
+            console.warn('Chart.js not loaded. Skipping chart creation.');
+            return;
+        }
         
-        const initChart = (id, prevChart, config) => {
-            const el = document.getElementById(id);
-            if (!el) return null;
-            const existing = Chart.getChart(id);
-            if (existing) existing.destroy();
-            if (prevChart && prevChart.destroy) prevChart.destroy();
-            return new Chart(el.getContext('2d'), config);
-        };
+        const ctx = document.getElementById('cashflowChart').getContext('2d');
+        
+        // Destroy existing chart if it exists
+        if (charts.cashflow) {
+            charts.cashflow.destroy();
+        }
 
-        const labels = ['Start', ...Array.from({length: duration}, (_, i) => `M${i+1}`)];
-        let cum = 0;
-        const cumulative = exp.cashFlows.map(v => cum += v);
+        // Calculate cumulative cash flow
+        const cumulativeCashFlow = [];
+        let cumulative = 0;
+        cashFlows.forEach(cf => {
+            cumulative += cf;
+            cumulativeCashFlow.push(cumulative);
+        });
 
-        // 1. Cashflow
-        charts.cashflow = initChart('cashflowChart', charts.cashflow, {
+        const labels = ['Start', ...Array.from({ length: duration }, (_, i) => `M${i + 1}`)];
+
+        const t = translations[currentLanguage];
+        
+        charts.cashflow = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
-                datasets: [
-                    { label: res['chart-monthly-cashflow'], data: exp.cashFlows, borderColor: '#8338ec', backgroundColor: 'rgba(131, 56, 236, 0.3)', fill: true, tension: 0.4 },
-                    { label: res['chart-cumulative-cashflow'], data: cumulative, borderColor: '#39ff14', backgroundColor: 'rgba(57, 255, 20, 0.3)', fill: true, tension: 0.4 }
-                ]
+                datasets: [{
+                    label: t['chart-monthly-cashflow'],
+                    data: cashFlows,
+                    borderColor: '#8338ec',
+                    backgroundColor: 'rgba(131, 56, 236, 0.3)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }, {
+                    label: t['chart-cumulative-cashflow'],
+                    data: cumulativeCashFlow,
+                    borderColor: '#39ff14',
+                    backgroundColor: 'rgba(57, 255, 20, 0.3)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
             },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#fff' } } }, scales: { x: { ticks: { color: '#ccc' }, grid: { color: '#333' } }, y: { ticks: { color: '#ccc' }, grid: { color: '#333' } } } }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: { color: '#ffffff', font: { size: 12, weight: '500' } }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                const locale = currentLanguage === 'es' ? 'es-ES' : 'en-US';
+                                label += '$' + context.parsed.y.toLocaleString(locale, { maximumFractionDigits: 0 });
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                const locale = currentLanguage === 'es' ? 'es-ES' : 'en-US';
+                                return '$' + value.toLocaleString(locale);
+                            },
+                            color: 'rgba(255, 255, 255, 0.85)'
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    },
+                    x: {
+                        ticks: { color: 'rgba(255, 255, 255, 0.85)' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    }
+                },
+                interaction: {
+                    mode: 'nearest',
+                    axis: 'x',
+                    intersect: false
+                }
+            }
         });
+    },
 
-        // 2. ROI
-        charts.roi = initChart('roiChart', charts.roi, {
+    createROIChart(expectedROI, bestROI, worstROI) {
+        // Check if Chart.js is available
+        if (typeof Chart === 'undefined') {
+            console.warn('Chart.js not loaded. Skipping chart creation.');
+            return;
+        }
+        
+        const t = translations[currentLanguage];
+        const ctx = document.getElementById('roiChart').getContext('2d');
+        
+        if (charts.roi) {
+            charts.roi.destroy();
+        }
+
+        charts.roi = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: [res['scenario-expected'], res['scenario-best'], res['scenario-worst']],
-                datasets: [{ label: 'ROI %', data: [exp.roi, best.roi, worst.roi], backgroundColor: ['#06b6d4', '#10b981', '#ef4444'] }]
+                labels: [t['scenario-expected'], t['scenario-best'], t['scenario-worst']],
+                datasets: [{
+                    label: 'ROI (%)',
+                    data: [expectedROI, bestROI, worstROI],
+                    backgroundColor: [
+                        'rgba(0, 217, 255, 0.8)',
+                        'rgba(57, 255, 20, 0.8)',
+                        'rgba(255, 0, 110, 0.8)'
+                    ],
+                    borderColor: [
+                        '#00d9ff',
+                        '#39ff14',
+                        '#ff006e'
+                    ],
+                    borderWidth: 2
+                }]
             },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#ccc' } }, y: { ticks: { color: '#ccc' } } } }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'ROI: ' + context.parsed.y.toFixed(2) + '%';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            },
+                            color: 'rgba(255, 255, 255, 0.85)'
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    },
+                    x: {
+                        ticks: { color: 'rgba(255, 255, 255, 0.85)' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    }
+                }
+            }
         });
+    },
 
-        // 3. Radar
-        charts.scenarios = initChart('scenariosChart', charts.scenarios, {
+    createScenariosChart(expectedMetrics, bestMetrics, worstMetrics) {
+        // Check if Chart.js is available
+        if (typeof Chart === 'undefined') {
+            console.warn('Chart.js not loaded. Skipping chart creation.');
+            return;
+        }
+        
+        const t = translations[currentLanguage];
+        const ctx = document.getElementById('scenariosChart').getContext('2d');
+        
+        if (charts.scenarios) {
+            charts.scenarios.destroy();
+        }
+
+        charts.scenarios = new Chart(ctx, {
             type: 'radar',
             data: {
-                labels: ['ROI', 'NPV (s)', 'Payback (inv)', 'IRR'],
-                datasets: [
-                    { label: res['scenario-expected'], data: [exp.roi, exp.npv/1000, 100/exp.payback, exp.irr], borderColor: '#06b6d4', backgroundColor: 'rgba(6,182,212,0.2)' },
-                    { label: res['scenario-best'], data: [best.roi, best.npv/1000, 100/best.payback, best.irr], borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.2)' }
-                ]
+                labels: ['ROI', 'NPV (scaled)', 'Payback (inv)', 'IRR'],
+                datasets: [{
+                    label: t['scenario-expected'],
+                    data: [
+                        expectedMetrics.roi,
+                        expectedMetrics.npv / 1000,
+                        100 / (expectedMetrics.paybackPeriod || 1),
+                        expectedMetrics.irr
+                    ],
+                    borderColor: '#00d9ff',
+                    backgroundColor: 'rgba(0, 217, 255, 0.3)',
+                    borderWidth: 2
+                }, {
+                    label: t['scenario-best'],
+                    data: [
+                        bestMetrics.roi,
+                        bestMetrics.npv / 1000,
+                        100 / (bestMetrics.paybackPeriod || 1),
+                        bestMetrics.irr
+                    ],
+                    borderColor: '#39ff14',
+                    backgroundColor: 'rgba(57, 255, 20, 0.3)',
+                    borderWidth: 2
+                }, {
+                    label: t['scenario-worst'],
+                    data: [
+                        worstMetrics.roi,
+                        worstMetrics.npv / 1000,
+                        100 / (worstMetrics.paybackPeriod || 1),
+                        worstMetrics.irr
+                    ],
+                    borderColor: '#ff6b35',
+                    backgroundColor: 'rgba(255, 107, 53, 0.3)',
+                    borderWidth: 2
+                }]
             },
-            options: { responsive: true, maintainAspectRatio: false, scales: { r: { ticks: { display: false }, grid: { color: '#444' }, pointLabels: { color: '#fff' } } } }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: { color: '#ffffff', font: { size: 12, weight: '500' } }
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        ticks: { color: 'rgba(255, 255, 255, 0.85)', backdropColor: 'transparent' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        pointLabels: { color: '#ffffff', font: { size: 12, weight: '500' } }
+                    }
+                }
+            }
         });
     }
 };
 
-// ==========================================
-// 5. EVENT HANDLERS & HELPERS
-// ==========================================
+// Recommendation Engine
+const RecommendationEngine = {
+    generateRecommendations(expectedMetrics, bestMetrics, worstMetrics, data) {
+        const recommendations = [];
 
-const updateFormText = (lang) => {
-    const res = LOCALE_RESOURCES[lang];
-    // List of ALL dynamic IDs in the HTML
-    const textIds = [
-        // Structural
-        'header-title', 'header-subtitle', 'section-strategic', 'strategic-description',
-        'section-dashboard', 'section-project-info', 'section-visual-analysis',
-        'section-scenarios', 'section-recommendations', 'section-export',
-        
-        // Calculator Subsections
-        'subsection-revenue', 'subsection-costs', 'subsection-scenarios',
-        
-        // Metric Cards (Labels & Default States)
-        'metric-label-roi', 'metric-label-npv', 'metric-label-payback', 'metric-label-irr',
-        'roi-status', 'npv-status', 'payback-status', 'irr-status',
-
-        // Strategic Inputs
-        'label-stratProjectName', 'label-problemOpportunity', 'label-proposedSolution', 'label-successMetrics',
-        'analysis-title', 'progress-title',
-
-        // Financial Inputs
-        'label-projectName', 'label-initialInvestment', 'label-discountRate', 'label-projectDuration',
-        'label-yearlyRevenue', 'label-revenueGrowth', 'label-operatingCosts', 'label-maintenanceCosts',
-        'label-bestCaseMultiplier', 'label-worstCaseMultiplier',
-        
-        // Scenario Cards
-        'title-expected', 'title-best', 'title-worst',
-        'label-expected-roi', 'label-expected-npv', 'label-expected-payback',
-        'label-best-roi', 'label-best-npv', 'label-best-payback',
-        'label-worst-roi', 'label-worst-npv', 'label-worst-payback',
-
-        // Footer & Extras
-        'export-description', 'default-recommendations',
-
-        // Buttons & Tabs
-        'btn-generate-analysis', 'btn-continue-financial', 'btn-back-step1', 'btn-calculate', 'btn-reset', 'btn-export',
-        'tab-cashflow', 'tab-roi', 'tab-scenarios'
-    ];
-    
-    // Update Text Content
-    textIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el && res[id]) el.textContent = res[id];
-    });
-
-    // Update Placeholders
-    const phMap = {
-        'stratProjectName': 'ph-stratProjectName',
-        'problemOpportunity': 'ph-problemOpportunity',
-        'proposedSolution': 'ph-proposedSolution',
-        'successMetrics': 'ph-successMetrics',
-        'projectName': 'ph-projectName'
-    };
-    Object.keys(phMap).forEach(id => {
-        const el = document.getElementById(id);
-        if (el && res[phMap[id]]) el.placeholder = res[phMap[id]];
-    });
-};
-
-window.switchTab = function(tabName) {
-    document.querySelectorAll('.tab').forEach(t => {
-        t.classList.remove('border-cyan-500', 'text-slate-300');
-        t.classList.add('border-transparent', 'text-slate-400');
-    });
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-    
-    const active = document.getElementById(`${tabName}-tab`);
-    if (active) active.classList.remove('hidden');
-    
-    const btn = event?.target;
-    if (btn) {
-        btn.classList.remove('border-transparent', 'text-slate-400');
-        btn.classList.add('border-cyan-500', 'text-slate-300');
-    }
-};
-
-window.switchLanguage = function(lang) {
-    currentLanguage = lang;
-    updateFormText(lang);
-    
-    ['en', 'es', 'pt'].forEach(l => {
-        const btn = document.getElementById(`lang-${l}`);
-        if(btn) {
-            btn.classList.toggle('bg-cyan-500', l === lang);
-            btn.classList.toggle('border-cyan-500', l === lang);
+        // ROI Analysis
+        if (expectedMetrics.roi > 50) {
+            recommendations.push({
+                type: 'success',
+                icon: '✅',
+                text: `¡Excelente ROI del ${expectedMetrics.roi.toFixed(2)}%! Este proyecto muestra retornos financieros sólidos y es altamente recomendado para su aprobación.`
+            });
+        } else if (expectedMetrics.roi > 20) {
+            recommendations.push({
+                type: 'info',
+                icon: '👍',
+                text: `Buen ROI del ${expectedMetrics.roi.toFixed(2)}%. Este proyecto es financieramente viable y debería considerarse favorablemente.`
+            });
+        } else if (expectedMetrics.roi > 0) {
+            recommendations.push({
+                type: 'warning',
+                icon: '⚠️',
+                text: `ROI moderado del ${expectedMetrics.roi.toFixed(2)}%. Considere formas de aumentar los ingresos o reducir costos para mejorar los retornos.`
+            });
+        } else {
+            recommendations.push({
+                type: 'danger',
+                icon: '❌',
+                text: `ROI negativo del ${expectedMetrics.roi.toFixed(2)}%. Este proyecto no es financieramente viable en su forma actual y requiere cambios significativos.`
+            });
         }
-    });
 
-    // Re-render analysis/charts if data exists to update localized labels inside them
-    if (projectData) document.getElementById('projectForm').dispatchEvent(new Event('submit'));
-};
+        // NPV Analysis
+        if (expectedMetrics.npv > 0) {
+            recommendations.push({
+                type: 'success',
+                icon: '💰',
+                text: `VPN positivo de $${expectedMetrics.npv.toLocaleString('es-ES', { maximumFractionDigits: 0 })} indica que el proyecto creará valor después de considerar el valor temporal del dinero.`
+            });
+        } else {
+            recommendations.push({
+                type: 'danger',
+                icon: '📉',
+                text: `VPN negativo de $${expectedMetrics.npv.toLocaleString('es-ES', { maximumFractionDigits: 0 })} sugiere que el proyecto destruirá valor. Revise la tasa de descuento y proyecciones de ingresos.`
+            });
+        }
 
-window.showGuideModal = function(field) {
-    const modal = document.getElementById('guideModal');
-    const content = GUIDE_CONTENT[currentLanguage][field] || GUIDE_CONTENT['en'][field];
-    if (content && modal) {
-        document.getElementById('modal-title').textContent = content.title;
-        document.getElementById('modal-body').innerHTML = content.content;
-        modal.classList.remove('hidden');
+        // Payback Period Analysis
+        if (expectedMetrics.paybackPeriod <= 12) {
+            recommendations.push({
+                type: 'success',
+                icon: '⚡',
+                text: `Período de recuperación rápido de ${expectedMetrics.paybackPeriod.toFixed(1)} meses. Recuperará su inversión en menos de un año.`
+            });
+        } else if (expectedMetrics.paybackPeriod <= 24) {
+            recommendations.push({
+                type: 'info',
+                icon: '⏱️',
+                text: `Período de recuperación razonable de ${expectedMetrics.paybackPeriod.toFixed(1)} meses (${(expectedMetrics.paybackPeriod / 12).toFixed(1)} años).`
+            });
+        } else if (expectedMetrics.paybackPeriod < data.projectDuration) {
+            recommendations.push({
+                type: 'warning',
+                icon: '⏳',
+                text: `Período de recuperación largo de ${expectedMetrics.paybackPeriod.toFixed(1)} meses. Considere si este plazo se alinea con sus objetivos estratégicos.`
+            });
+        } else {
+            recommendations.push({
+                type: 'danger',
+                icon: '🚫',
+                text: `El período de recuperación excede la duración del proyecto. El proyecto no alcanzará el punto de equilibrio dentro del plazo planificado.`
+            });
+        }
+
+        // Risk Analysis
+        const roiRange = bestMetrics.roi - worstMetrics.roi;
+        if (roiRange > 100) {
+            recommendations.push({
+                type: 'warning',
+                icon: '🎲',
+                text: `Alta variabilidad en escenarios (rango de ${roiRange.toFixed(0)}%) indica riesgo significativo. Considere estrategias de mitigación de riesgos.`
+            });
+        } else if (roiRange < 30) {
+            recommendations.push({
+                type: 'success',
+                icon: '🎯',
+                text: `Baja variabilidad en escenarios sugiere resultados consistentes con riesgo manejable.`
+            });
+        }
+
+        // Worst Case Analysis
+        if (worstMetrics.roi < 0) {
+            recommendations.push({
+                type: 'warning',
+                icon: '⚠️',
+                text: `El escenario del peor caso muestra ROI negativo (${worstMetrics.roi.toFixed(2)}%). Asegúrese de tener planes de contingencia si los ingresos son menores a lo esperado.`
+            });
+        }
+
+        // IRR vs Discount Rate
+        if (expectedMetrics.irr > data.discountRate + 5) {
+            recommendations.push({
+                type: 'success',
+                icon: '📈',
+                text: `La TIR del ${expectedMetrics.irr.toFixed(2)}% excede significativamente su tasa de descuento del ${data.discountRate}%, indicando una fuerte creación de valor.`
+            });
+        } else if (expectedMetrics.irr > data.discountRate) {
+            recommendations.push({
+                type: 'info',
+                icon: '✓',
+                text: `La TIR del ${expectedMetrics.irr.toFixed(2)}% excede su tasa de descuento, lo cual es positivo pero deja un margen limitado de error.`
+            });
+        } else {
+            recommendations.push({
+                type: 'danger',
+                icon: '⚠️',
+                text: `La TIR del ${expectedMetrics.irr.toFixed(2)}% está por debajo de su tasa de descuento del ${data.discountRate}%, sugiriendo destrucción de valor.`
+            });
+        }
+
+        return recommendations;
+    },
+
+    displayRecommendations(recommendations) {
+        const container = document.getElementById('recommendations');
+        container.innerHTML = recommendations.map(rec => `
+            <div class="recommendation-item">
+                <span class="recommendation-icon">${rec.icon}</span>
+                <strong>${rec.text}</strong>
+            </div>
+        `).join('');
     }
 };
 
-window.closeGuideModal = function() {
-    document.getElementById('guideModal').classList.add('hidden');
-};
+// Form Handling
+document.getElementById('projectForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    UIUpdater.showLoading();
+    
+    // Simulate processing time for better UX
+    setTimeout(() => {
+        // Collect form data
+        projectData = {
+            projectName: document.getElementById('projectName').value,
+            initialInvestment: parseFloat(document.getElementById('initialInvestment').value),
+            discountRate: parseFloat(document.getElementById('discountRate').value),
+            projectDuration: parseInt(document.getElementById('projectDuration').value),
+            yearlyRevenue: parseFloat(document.getElementById('yearlyRevenue').value),
+            revenueGrowth: parseFloat(document.getElementById('revenueGrowth').value),
+            operatingCosts: parseFloat(document.getElementById('operatingCosts').value),
+            maintenanceCosts: parseFloat(document.getElementById('maintenanceCosts').value),
+            bestCaseMultiplier: parseFloat(document.getElementById('bestCaseMultiplier').value),
+            worstCaseMultiplier: parseFloat(document.getElementById('worstCaseMultiplier').value)
+        };
 
-window.goToStep2 = function() {
+        // Calculate metrics for all scenarios
+        const expectedMetrics = FinancialCalculator.calculateMetrics(projectData);
+        
+        const bestCaseData = { ...projectData, yearlyRevenue: projectData.yearlyRevenue * projectData.bestCaseMultiplier };
+        const bestMetrics = FinancialCalculator.calculateMetrics(bestCaseData);
+        
+        const worstCaseData = { ...projectData, yearlyRevenue: projectData.yearlyRevenue * projectData.worstCaseMultiplier };
+        const worstMetrics = FinancialCalculator.calculateMetrics(worstCaseData);
+
+        // Update UI
+        UIUpdater.updateDashboard(expectedMetrics);
+        UIUpdater.updateScenarioCards(expectedMetrics, bestMetrics, worstMetrics);
+
+        // Create charts
+        ChartManager.createCashFlowChart(expectedMetrics.cashFlows, projectData.projectDuration);
+        ChartManager.createROIChart(expectedMetrics.roi, bestMetrics.roi, worstMetrics.roi);
+        ChartManager.createScenariosChart(expectedMetrics, bestMetrics, worstMetrics);
+
+        // Generate and display recommendations
+        const recommendations = RecommendationEngine.generateRecommendations(expectedMetrics, bestMetrics, worstMetrics, projectData);
+        RecommendationEngine.displayRecommendations(recommendations);
+
+        UIUpdater.hideLoading();
+        UIUpdater.showMessage('success', '✅ ¡Análisis completado exitosamente! Revise las métricas y recomendaciones a continuación.');
+
+        // Smooth scroll to dashboard
+        document.getElementById('dashboard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 800);
+});
+
+// Tab Switching
+function switchTab(tabName) {
+    // Remove active styling from all tabs
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('border-cyan-500', 'text-slate-300');
+        tab.classList.add('border-transparent', 'text-slate-400');
+    });
+    
+    // Hide all tab content
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.add('hidden');
+    });
+    
+    // Add active styling to clicked tab
+    event.target.classList.remove('border-transparent', 'text-slate-400');
+    event.target.classList.add('border-cyan-500', 'text-slate-300');
+    
+    // Show corresponding content
+    document.getElementById(tabName + '-tab').classList.remove('hidden');
+}
+
+// Reset Form
+function resetForm() {
+    if (confirm('¿Está seguro de que desea reiniciar el formulario? Todos los datos se borrarán.')) {
+        document.getElementById('projectForm').reset();
+        
+        // Reset dashboard
+        document.getElementById('roi-value').textContent = '0%';
+        document.getElementById('npv-value').textContent = '$0';
+        document.getElementById('payback-value').textContent = '0';
+        document.getElementById('irr-value').textContent = '0%';
+        document.getElementById('roi-status').textContent = 'Ingrese datos para calcular';
+        document.getElementById('npv-status').textContent = 'Flujo de caja descontado';
+        
+        // Reset scenario cards
+        ['expected', 'best', 'worst'].forEach(scenario => {
+            document.getElementById(`${scenario}-roi`).textContent = '0%';
+            document.getElementById(`${scenario}-npv`).textContent = '$0';
+            document.getElementById(`${scenario}-payback`).textContent = '0 meses';
+        });
+        
+        // Clear charts
+        Object.values(charts).forEach(chart => {
+            if (chart) chart.destroy();
+        });
+        
+        // Reset recommendations
+        document.getElementById('recommendations').innerHTML = '<p style="color: rgba(255, 255, 255, 0.7);">Complete el formulario y calcule para recibir recomendaciones inteligentes basadas en su análisis de caso de negocio.</p>';
+        
+        UIUpdater.showMessage('info', 'El formulario ha sido reiniciado. Ingrese nuevos datos del proyecto para analizar.');
+    }
+}
+
+// PDF Export Function
+function exportToPDF() {
+    if (!projectData) {
+        alert('Por favor calcule su caso de negocio primero antes de exportar.');
+        return;
+    }
+
+    // Check if jsPDF is available
+    if (typeof window.jspdf === 'undefined') {
+        alert('Biblioteca de exportación PDF no cargada. Por favor verifique su conexión a internet y actualice la página.');
+        return;
+    }
+
+    UIUpdater.showLoading();
+
+    setTimeout(() => {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        let yPosition = 20;
+        const lineHeight = 7;
+        const pageWidth = doc.internal.pageSize.width;
+        const margin = 20;
+
+        // Header
+        doc.setFontSize(20);
+        doc.setTextColor(37, 99, 235);
+        doc.text('Analizador de Casos de Negocio Pro', margin, yPosition);
+        yPosition += 10;
+
+        doc.setFontSize(10);
+        doc.setTextColor(100, 100, 100);
+        doc.text('Reporte Completo de Análisis', margin, yPosition);
+        yPosition += 10;
+
+        // Strategic Analysis Section (if available)
+        if (strategicData) {
+            doc.setFontSize(14);
+            doc.setTextColor(0, 0, 0);
+            doc.text('Análisis Estratégico', margin, yPosition);
+            yPosition += lineHeight;
+
+            doc.setFontSize(10);
+            doc.text(`Proyecto: ${strategicData.projectName}`, margin + 5, yPosition);
+            yPosition += lineHeight;
+            
+            const problemText = doc.splitTextToSize(`Problema/Oportunidad: ${strategicData.problem}`, pageWidth - margin * 2 - 5);
+            doc.text(problemText, margin + 5, yPosition);
+            yPosition += problemText.length * lineHeight + 3;
+            
+            const solutionText = doc.splitTextToSize(`Solución Propuesta: ${strategicData.solution}`, pageWidth - margin * 2 - 5);
+            doc.text(solutionText, margin + 5, yPosition);
+            yPosition += solutionText.length * lineHeight + 3;
+            
+            yPosition += 5;
+        }
+
+        // Project Information
+        doc.setFontSize(14);
+        doc.setTextColor(0, 0, 0);
+        doc.text('Información del Proyecto', margin, yPosition);
+        yPosition += lineHeight;
+
+        doc.setFontSize(10);
+        doc.text(`Nombre del Proyecto: ${projectData.projectName}`, margin + 5, yPosition);
+        yPosition += lineHeight;
+        doc.text(`Inversión Inicial: $${projectData.initialInvestment.toLocaleString('es-ES')}`, margin + 5, yPosition);
+        yPosition += lineHeight;
+        doc.text(`Duración del Proyecto: ${projectData.projectDuration} meses`, margin + 5, yPosition);
+        yPosition += lineHeight;
+        doc.text(`Tasa de Descuento: ${projectData.discountRate}%`, margin + 5, yPosition);
+        yPosition += lineHeight + 5;
+
+        // Financial Metrics
+        doc.setFontSize(14);
+        doc.text('Métricas Financieras Clave', margin, yPosition);
+        yPosition += lineHeight;
+
+        doc.setFontSize(10);
+        const roiValue = document.getElementById('roi-value').textContent;
+        const npvValue = document.getElementById('npv-value').textContent;
+        const paybackValue = document.getElementById('payback-value').textContent;
+        const irrValue = document.getElementById('irr-value').textContent;
+
+        doc.text(`ROI (Retorno de Inversión): ${roiValue}`, margin + 5, yPosition);
+        yPosition += lineHeight;
+        doc.text(`VPN (Valor Presente Neto): ${npvValue}`, margin + 5, yPosition);
+        yPosition += lineHeight;
+        doc.text(`Período de Recuperación: ${paybackValue} meses`, margin + 5, yPosition);
+        yPosition += lineHeight;
+        doc.text(`TIR (Tasa Interna de Retorno): ${irrValue}`, margin + 5, yPosition);
+        yPosition += lineHeight + 5;
+
+        // Scenario Analysis
+        doc.setFontSize(14);
+        doc.text('Análisis de Escenarios', margin, yPosition);
+        yPosition += lineHeight;
+
+        doc.setFontSize(10);
+        doc.text('Caso Esperado:', margin + 5, yPosition);
+        yPosition += lineHeight;
+        doc.text(`  ROI: ${document.getElementById('expected-roi').textContent}`, margin + 10, yPosition);
+        yPosition += lineHeight;
+        doc.text(`  VPN: ${document.getElementById('expected-npv').textContent}`, margin + 10, yPosition);
+        yPosition += lineHeight;
+
+        doc.text('Mejor Caso:', margin + 5, yPosition);
+        yPosition += lineHeight;
+        doc.text(`  ROI: ${document.getElementById('best-roi').textContent}`, margin + 10, yPosition);
+        yPosition += lineHeight;
+        doc.text(`  VPN: ${document.getElementById('best-npv').textContent}`, margin + 10, yPosition);
+        yPosition += lineHeight;
+
+        doc.text('Peor Caso:', margin + 5, yPosition);
+        yPosition += lineHeight;
+        doc.text(`  ROI: ${document.getElementById('worst-roi').textContent}`, margin + 10, yPosition);
+        yPosition += lineHeight;
+        doc.text(`  VPN: ${document.getElementById('worst-npv').textContent}`, margin + 10, yPosition);
+        yPosition += lineHeight + 5;
+
+        // Recommendations
+        if (yPosition > 240) {
+            doc.addPage();
+            yPosition = 20;
+        }
+
+        doc.setFontSize(14);
+        doc.text('Recomendaciones', margin, yPosition);
+        yPosition += lineHeight;
+
+        doc.setFontSize(9);
+        const recommendations = document.querySelectorAll('.recommendation-item strong');
+        recommendations.forEach((rec, index) => {
+            if (yPosition > 270) {
+                doc.addPage();
+                yPosition = 20;
+            }
+            const text = doc.splitTextToSize(`${index + 1}. ${rec.textContent}`, pageWidth - margin * 2);
+            doc.text(text, margin + 5, yPosition);
+            yPosition += text.length * lineHeight + 2;
+        });
+
+        // Footer
+        const pageCount = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+            doc.setPage(i);
+            doc.setFontSize(8);
+            doc.setTextColor(150);
+            doc.text(`Page ${i} of ${pageCount}`, pageWidth / 2, doc.internal.pageSize.height - 10, { align: 'center' });
+            doc.text(`Generated: ${new Date().toLocaleDateString()}`, margin, doc.internal.pageSize.height - 10);
+        }
+
+        // Save PDF
+        const fileName = `Caso_Negocio_${projectData.projectName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+        doc.save(fileName);
+
+        UIUpdater.hideLoading();
+        UIUpdater.showMessage('success', '📥 ¡Reporte PDF exportado exitosamente!');
+    }, 500);
+}
+
+// Auto-calculate on input change (debounced)
+let autoCalcTimeout;
+const formInputs = document.querySelectorAll('#projectForm input');
+formInputs.forEach(input => {
+    input.addEventListener('input', function() {
+        clearTimeout(autoCalcTimeout);
+        autoCalcTimeout = setTimeout(() => {
+            // Only auto-calculate if we have already calculated once
+            if (projectData && document.getElementById('projectForm').checkValidity()) {
+                document.getElementById('projectForm').dispatchEvent(new Event('submit'));
+            }
+        }, 1500);
+    });
+});
+
+// Strategic Form Handler
+document.getElementById('strategicForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    handleStrategicSubmit();
+});
+
+function handleStrategicSubmit() {
+    // Collect strategic form data
+    strategicData = {
+        projectName: document.getElementById('stratProjectName').value,
+        problem: document.getElementById('problemOpportunity').value,
+        solution: document.getElementById('proposedSolution').value,
+        metrics: document.getElementById('successMetrics').value
+    };
+    
+    UIUpdater.showLoading();
+    
+    // Simulate LLM analysis (in production, this would call an actual LLM API)
+    setTimeout(() => {
+        const analysis = generateMockLLMAnalysis(strategicData);
+        displayStrategicAnalysis(analysis);
+        UIUpdater.hideLoading();
+    }, 1500);
+}
+
+function generateMockLLMAnalysis(data) {
+    // Mock LLM analysis based on inputs
+    const viabilityScore = Math.floor(Math.random() * 20) + 75; // 75-95
+    
+    const analysis = {
+        viability: viabilityScore,
+        strengths: [
+            currentLanguage === 'en' ? 'Clear problem definition and market need' : 'Definición clara del problema y necesidad del mercado',
+            currentLanguage === 'en' ? 'Well-structured solution approach' : 'Enfoque de solución bien estructurado',
+            currentLanguage === 'en' ? 'Measurable success metrics defined' : 'Métricas de éxito medibles definidas'
+        ],
+        weaknesses: [
+            currentLanguage === 'en' ? 'Market competition analysis needed' : 'Se necesita análisis de competencia del mercado',
+            currentLanguage === 'en' ? 'Resource requirements should be detailed further' : 'Los requisitos de recursos deben detallarse más'
+        ],
+        risks: [
+            currentLanguage === 'en' ? 'Implementation timeline may be challenging' : 'El cronograma de implementación puede ser desafiante',
+            currentLanguage === 'en' ? 'Stakeholder buy-in is critical for success' : 'La aceptación de los interesados es crítica para el éxito'
+        ],
+        recommendation: viabilityScore >= 80 
+            ? (currentLanguage === 'en' ? 'Highly recommended to proceed with detailed financial analysis' : 'Altamente recomendado proceder con análisis financiero detallado')
+            : (currentLanguage === 'en' ? 'Recommended to proceed with caution and detailed planning' : 'Recomendado proceder con precaución y planificación detallada')
+    };
+    
+    return analysis;
+}
+
+function displayStrategicAnalysis(analysis) {
+    const container = document.getElementById('analysisContent');
+    const t = translations[currentLanguage];
+    
+    const html = `
+        <div style="margin-bottom: 1.5rem;">
+            <h4>${currentLanguage === 'en' ? 'Viability Assessment' : 'Evaluación de Viabilidad'}</h4>
+            <div class="viability-score">${currentLanguage === 'en' ? 'Viability' : 'Viabilidad'}: ${analysis.viability}/100</div>
+        </div>
+        
+        <div style="margin-bottom: 1.5rem;">
+            <h4>✓ ${currentLanguage === 'en' ? 'Strengths' : 'Fortalezas'}</h4>
+            <ul>
+                ${analysis.strengths.map(s => `<li>${s}</li>`).join('')}
+            </ul>
+        </div>
+        
+        <div style="margin-bottom: 1.5rem;">
+            <h4>⚠️ ${currentLanguage === 'en' ? 'Areas for Improvement' : 'Áreas de Mejora'}</h4>
+            <ul>
+                ${analysis.weaknesses.map(w => `<li style="color: var(--warning-color);">${w}</li>`).join('')}
+            </ul>
+        </div>
+        
+        <div style="margin-bottom: 1.5rem;">
+            <h4>🎯 ${currentLanguage === 'en' ? 'Key Risks' : 'Riesgos Clave'}</h4>
+            <ul>
+                ${analysis.risks.map(r => `<li style="color: var(--danger-color);">${r}</li>`).join('')}
+            </ul>
+        </div>
+        
+        <div style="padding: 1rem; background: var(--gray-50); border-radius: var(--border-radius); border-left: 4px solid var(--success-color);">
+            <strong>${currentLanguage === 'en' ? 'Recommendation' : 'Recomendación'}:</strong>
+            <p style="margin-top: 0.5rem;">${analysis.recommendation}</p>
+        </div>
+    `;
+    
+    container.innerHTML = html;
+    document.getElementById('strategicAnalysisResult').classList.remove('hidden');
+    
+    // Scroll to result
+    document.getElementById('strategicAnalysisResult').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Step Navigation Functions
+function goToStep2() {
+    // Hide step 1, show step 2
     document.getElementById('step1-strategic-module').style.display = 'none';
     document.getElementById('step2-financial-module').style.display = 'block';
-    if(strategicData) document.getElementById('projectName').value = strategicData.projectName;
-    window.scrollTo({top:0, behavior:'smooth'});
-};
+    
+    // Pre-fill project name from strategic analysis if available
+    if (strategicData && strategicData.projectName) {
+        document.getElementById('projectName').value = strategicData.projectName;
+    }
+    
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-window.goToStep1 = function() {
+function goToStep1() {
+    // Hide step 2, show step 1
     document.getElementById('step2-financial-module').style.display = 'none';
     document.getElementById('step1-strategic-module').style.display = 'block';
-    window.scrollTo({top:0, behavior:'smooth'});
-};
+    
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-window.resetForm = function() {
-    if(confirm('Reiniciar formulario? / Reset form?')) {
-        document.getElementById('projectForm').reset();
-        window.location.reload(); 
+// ====================================
+// Contextual Guide System
+// ====================================
+
+const guideContent = {
+    en: {
+        projectName: {
+            title: "Project Name - Best Practices",
+            content: `
+                <h4>🎯 Purpose</h4>
+                <p>A clear, concise name that immediately conveys the project's focus and value.</p>
+                
+                <h4>✅ What to Include</h4>
+                <ul>
+                    <li><strong>Action-oriented</strong>: Use verbs that show initiative (Transform, Implement, Optimize)</li>
+                    <li><strong>Specific scope</strong>: Indicate the area or function affected</li>
+                    <li><strong>Keep it professional</strong>: 3-7 words maximum</li>
+                </ul>
+                
+                <h4>💡 Examples</h4>
+                <div class="example">
+                    <strong>Good:</strong> "AI-Powered Customer Support Automation"<br>
+                    <strong>Why:</strong> Clear action (automation), technology (AI), and area (customer support)
+                </div>
+                <div class="example">
+                    <strong>Good:</strong> "Enterprise Cloud Migration Initiative"<br>
+                    <strong>Why:</strong> Specific scope (enterprise), clear action (migration), and target (cloud)
+                </div>
+            `
+        },
+        problemOpportunity: {
+            title: "Problem/Opportunity Identification - Framework",
+            content: `
+                <h4>🎯 Purpose</h4>
+                <p>Define the business pain point or opportunity with quantifiable impact. This is the foundation of your business case.</p>
+                
+                <h4>✅ Required Elements</h4>
+                <ul>
+                    <li><strong>Pain Description</strong>: 2-3 clear sentences about the current problem</li>
+                    <li><strong>Who is affected</strong>: Identify stakeholders and teams impacted</li>
+                    <li><strong>Quantifiable Impact</strong>: Translate to business metrics (cost, time, risk)</li>
+                    <li><strong>Business consequences</strong>: What happens if we don't act?</li>
+                </ul>
+                
+                <h4>💡 Example Structure</h4>
+                <div class="example">
+                    "Currently, the support team invests 10 hours weekly on manual ticket classification, generating an average 4-hour delay in first response to customers. This delay contributes to a 15% customer dissatisfaction rate and represents an operational cost of 40 hours-man per month, equivalent to $8,000 in labor costs."
+                </div>
+                
+                <h4>📊 Tips</h4>
+                <ul>
+                    <li>Use specific numbers and percentages</li>
+                    <li>Focus on business impact, not just technical issues</li>
+                    <li>Connect to strategic company goals</li>
+                </ul>
+            `
+        },
+        proposedSolution: {
+            title: "Proposed Solution - Strategic Approach",
+            content: `
+                <h4>🎯 Purpose</h4>
+                <p>Describe your solution in terms of business capabilities, not just technology. Focus on what it enables, not how it works.</p>
+                
+                <h4>✅ Required Elements</h4>
+                <ul>
+                    <li><strong>Solution Concept</strong>: Describe in terms of capability (what it does)</li>
+                    <li><strong>Key Features</strong>: 3-5 main capabilities that address the problem</li>
+                    <li><strong>Clear Scope</strong>: Define what WILL be done in Phase 1</li>
+                    <li><strong>Out of Scope</strong>: Explicitly state what WON'T be done initially</li>
+                </ul>
+                
+                <h4>💡 Example Structure</h4>
+                <div class="example">
+                    "Implement an AI system that functions as an intelligent 'triage agent', capable of reading, understanding, and classifying each support ticket instantly. <strong>Phase 1 features:</strong> (1) Automatic categorization by department, (2) Priority assessment based on urgency keywords, (3) Integration with existing ticketing system. <strong>Phase 1 will NOT:</strong> Generate automatic responses to customers or handle ticket resolution."
+                </div>
+                
+                <h4>📊 Best Practices</h4>
+                <ul>
+                    <li>Avoid excessive technical jargon</li>
+                    <li>Focus on business outcomes</li>
+                    <li>Be realistic about scope</li>
+                    <li>Consider MVP (Minimum Viable Product) approach</li>
+                </ul>
+            `
+        },
+        successMetrics: {
+            title: "Success Metrics / ROI - Measurement Framework",
+            content: `
+                <h4>🎯 Purpose</h4>
+                <p>Define clear, measurable outcomes that prove project success. These metrics will be used to track progress and demonstrate ROI.</p>
+                
+                <h4>✅ Required Elements</h4>
+                <ul>
+                    <li><strong>Primary Objective</strong>: One main measurable result (most important)</li>
+                    <li><strong>Target & Timeline</strong>: Specific goal with timeframe</li>
+                    <li><strong>Secondary Results</strong>: 2-3 additional expected benefits</li>
+                    <li><strong>Required Resources</strong>: What you need to start</li>
+                </ul>
+                
+                <h4>💡 Example Structure</h4>
+                <div class="example">
+                    <strong>Primary Objective:</strong> Reduce manual ticket classification time by 90% in the first quarter (from 10 hours/week to 1 hour/week).<br><br>
+                    <strong>Secondary Outcomes:</strong><br>
+                    • Decrease first response time by 50% (from 4 hours to 2 hours)<br>
+                    • Improve customer satisfaction by 5 points (from 85% to 90%)<br>
+                    • Free up 36 hours/month for high-value support activities<br><br>
+                    <strong>Resources Needed:</strong><br>
+                    • Access to historical ticket data (last 6 months)<br>
+                    • 1 product specialist assigned 20% time<br>
+                    • API access to current ticketing system
+                </div>
+                
+                <h4>📊 SMART Criteria</h4>
+                <ul>
+                    <li><strong>S</strong>pecific: Clear and well-defined</li>
+                    <li><strong>M</strong>easurable: Quantifiable outcomes</li>
+                    <li><strong>A</strong>chievable: Realistic given constraints</li>
+                    <li><strong>R</strong>elevant: Aligned with business goals</li>
+                    <li><strong>T</strong>ime-bound: Clear deadline or timeframe</li>
+                </ul>
+            `
+        }
+    },
+    es: {
+        projectName: {
+            title: "Nombre del Proyecto - Mejores Prácticas",
+            content: `
+                <h4>🎯 Propósito</h4>
+                <p>Un nombre claro y conciso que transmita inmediatamente el enfoque y valor del proyecto.</p>
+                
+                <h4>✅ Qué Incluir</h4>
+                <ul>
+                    <li><strong>Orientado a la acción</strong>: Use verbos que muestren iniciativa (Transformar, Implementar, Optimizar)</li>
+                    <li><strong>Alcance específico</strong>: Indique el área o función afectada</li>
+                    <li><strong>Manténgalo profesional</strong>: Máximo 3-7 palabras</li>
+                </ul>
+                
+                <h4>💡 Ejemplos</h4>
+                <div class="example">
+                    <strong>Bueno:</strong> "Automatización de Soporte al Cliente con IA"<br>
+                    <strong>Por qué:</strong> Acción clara (automatización), tecnología (IA) y área (soporte al cliente)
+                </div>
+                <div class="example">
+                    <strong>Bueno:</strong> "Iniciativa de Migración a la Nube Empresarial"<br>
+                    <strong>Por qué:</strong> Alcance específico (empresarial), acción clara (migración) y objetivo (nube)
+                </div>
+            `
+        },
+        problemOpportunity: {
+            title: "Identificación de Problema/Oportunidad - Marco de Trabajo",
+            content: `
+                <h4>🎯 Propósito</h4>
+                <p>Definir el punto de dolor del negocio u oportunidad con impacto cuantificable. Esta es la base de su caso de negocio.</p>
+                
+                <h4>✅ Elementos Requeridos</h4>
+                <ul>
+                    <li><strong>Descripción del Dolor</strong>: 2-3 frases claras sobre el problema actual</li>
+                    <li><strong>A quién afecta</strong>: Identifique stakeholders y equipos impactados</li>
+                    <li><strong>Impacto Cuantificable</strong>: Traducir a métricas de negocio (costo, tiempo, riesgo)</li>
+                    <li><strong>Consecuencias empresariales</strong>: ¿Qué sucede si no actuamos?</li>
+                </ul>
+                
+                <h4>💡 Estructura de Ejemplo</h4>
+                <div class="example">
+                    "Actualmente, el equipo de soporte invierte 10 horas semanales en la clasificación manual de tickets, generando un retraso promedio de 4 horas en la primera respuesta a los clientes. Este retraso contribuye a una tasa de insatisfacción del cliente del 15% y representa un costo operativo de 40 horas-hombre al mes, equivalente a $8,000 en costos laborales."
+                </div>
+                
+                <h4>📊 Consejos</h4>
+                <ul>
+                    <li>Use números y porcentajes específicos</li>
+                    <li>Enfóquese en el impacto empresarial, no solo en problemas técnicos</li>
+                    <li>Conéctelo con objetivos estratégicos de la empresa</li>
+                </ul>
+            `
+        },
+        proposedSolution: {
+            title: "Solución Propuesta - Enfoque Estratégico",
+            content: `
+                <h4>🎯 Propósito</h4>
+                <p>Describa su solución en términos de capacidades empresariales, no solo tecnología. Enfóquese en lo que permite, no en cómo funciona.</p>
+                
+                <h4>✅ Elementos Requeridos</h4>
+                <ul>
+                    <li><strong>Concepto de la Solución</strong>: Describir en términos de capacidad (qué hace)</li>
+                    <li><strong>Características Clave</strong>: 3-5 capacidades principales que abordan el problema</li>
+                    <li><strong>Alcance Claro</strong>: Definir qué SE HARÁ en la Fase 1</li>
+                    <li><strong>Fuera del Alcance</strong>: Indicar explícitamente qué NO se hará inicialmente</li>
+                </ul>
+                
+                <h4>💡 Estructura de Ejemplo</h4>
+                <div class="example">
+                    "Implementar un sistema de IA que funcione como un 'agente de triaje' inteligente, capaz de leer, entender y clasificar cada ticket de soporte al instante. <strong>Características Fase 1:</strong> (1) Categorización automática por departamento, (2) Evaluación de prioridad basada en palabras clave de urgencia, (3) Integración con sistema de tickets existente. <strong>Fase 1 NO incluirá:</strong> Generación de respuestas automáticas a clientes ni resolución de tickets."
+                </div>
+                
+                <h4>📊 Mejores Prácticas</h4>
+                <ul>
+                    <li>Evite jerga técnica excesiva</li>
+                    <li>Enfóquese en resultados empresariales</li>
+                    <li>Sea realista sobre el alcance</li>
+                    <li>Considere el enfoque MVP (Producto Mínimo Viable)</li>
+                </ul>
+            `
+        },
+        successMetrics: {
+            title: "Métricas de Éxito / ROI - Marco de Medición",
+            content: `
+                <h4>🎯 Propósito</h4>
+                <p>Definir resultados claros y medibles que demuestren el éxito del proyecto. Estas métricas se usarán para rastrear progreso y demostrar ROI.</p>
+                
+                <h4>✅ Elementos Requeridos</h4>
+                <ul>
+                    <li><strong>Objetivo Principal</strong>: Un resultado medible principal (el más importante)</li>
+                    <li><strong>Meta y Cronograma</strong>: Objetivo específico con marco temporal</li>
+                    <li><strong>Resultados Secundarios</strong>: 2-3 beneficios adicionales esperados</li>
+                    <li><strong>Recursos Necesarios</strong>: Lo que necesita para comenzar</li>
+                </ul>
+                
+                <h4>💡 Estructura de Ejemplo</h4>
+                <div class="example">
+                    <strong>Objetivo Principal:</strong> Reducir el tiempo de clasificación manual de tickets en un 90% en el primer trimestre (de 10 horas/semana a 1 hora/semana).<br><br>
+                    <strong>Resultados Secundarios:</strong><br>
+                    • Disminuir el tiempo de primera respuesta en un 50% (de 4 horas a 2 horas)<br>
+                    • Mejorar la satisfacción del cliente en 5 puntos (del 85% al 90%)<br>
+                    • Liberar 36 horas/mes para actividades de soporte de alto valor<br><br>
+                    <strong>Recursos Necesarios:</strong><br>
+                    • Acceso a datos históricos de tickets (últimos 6 meses)<br>
+                    • 1 especialista de producto asignado 20% del tiempo<br>
+                    • Acceso API al sistema de tickets actual
+                </div>
+                
+                <h4>📊 Criterios SMART</h4>
+                <ul>
+                    <li><strong>E</strong>specífico: Claro y bien definido</li>
+                    <li><strong>M</strong>edible: Resultados cuantificables</li>
+                    <li><strong>A</strong>lcanzable: Realista dadas las restricciones</li>
+                    <li><strong>R</strong>elevante: Alineado con objetivos empresariales</li>
+                    <li><strong>T</strong>emporal: Plazo o marco temporal claro</li>
+                </ul>
+            `
+        }
     }
 };
 
-window.exportToPDF = function() {
-    if (!projectData) return alert('Analysis required / Requiere análisis');
-    if (typeof window.jspdf === 'undefined') return alert('PDF Library missing');
+// Modal Functions
+function showGuideModal(fieldType) {
+    const modal = document.getElementById('guideModal');
+    const title = document.getElementById('modal-title');
+    const body = document.getElementById('modal-body');
     
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text(`Financial Report: ${projectData.projectName}`, 20, 20);
-    doc.setFontSize(12);
-    doc.text(`ROI: ${document.getElementById('roi-value').textContent}`, 20, 40);
-    doc.text(`NPV: ${document.getElementById('npv-value').textContent}`, 20, 50);
-    doc.save(`Report_${projectData.projectName}.pdf`);
-};
+    const guide = guideContent[currentLanguage][fieldType];
+    if (guide) {
+        title.textContent = guide.title;
+        body.innerHTML = guide.content;
+        modal.classList.remove('hidden');
+        
+        // Prevent body scroll when modal is open
+        document.body.style.overflow = 'hidden';
+    }
+}
 
-// ==========================================
-// 6. MAIN LISTENERS
-// ==========================================
+function closeGuideModal() {
+    const modal = document.getElementById('guideModal');
+    modal.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+}
 
-document.getElementById('strategicForm')?.addEventListener('submit', function(e) {
-    e.preventDefault();
-    UIUpdater.toggleLoading(true);
-    
-    setTimeout(() => {
-        try {
-            strategicData = {
-                projectName: document.getElementById('stratProjectName').value,
-                problem: document.getElementById('problemOpportunity').value,
-                solution: document.getElementById('proposedSolution').value,
-                metrics: document.getElementById('successMetrics').value
-            };
-            
-            const analysis = StrategicScorer.evaluate(strategicData);
-            
-            const resDiv = document.getElementById('analysisContent');
-            const isEs = currentLanguage === 'es';
-            resDiv.innerHTML = `
-                <div class="mb-4">
-                    <h4 class="font-bold text-cyan-400">Score: ${analysis.score}/100</h4>
-                    <div class="w-full bg-gray-700 h-2 rounded mt-2"><div class="bg-cyan-500 h-2 rounded" style="width:${analysis.score}%"></div></div>
-                </div>
-                <ul class="list-disc pl-5 mb-4">${analysis.strengths.map(s => `<li>${s}</li>`).join('')}</ul>
-                <p class="font-bold p-3 bg-slate-700 rounded border-l-4 border-emerald-500">${analysis.recommendation}</p>
-            `;
-            
-            document.getElementById('strategicAnalysisResult').classList.remove('hidden');
-        } catch (err) {
-            console.error(err);
-            alert("Error in calculation logic. Check console.");
-        } finally {
-            UIUpdater.toggleLoading(false);
-        }
-    }, 1000);
+// Close modal when clicking outside
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('guideModal');
+    if (e.target === modal) {
+        closeGuideModal();
+    }
 });
 
-document.getElementById('projectForm')?.addEventListener('submit', function(e) {
-    e.preventDefault();
-    UIUpdater.toggleLoading(true);
-
-    setTimeout(() => {
-        try {
-            const val = (id) => parseFloat(document.getElementById(id).value) || 0;
-            
-            projectData = {
-                projectName: document.getElementById('projectName').value,
-                initialInvestment: val('initialInvestment'),
-                discountRate: val('discountRate'),
-                projectDuration: parseInt(document.getElementById('projectDuration').value) || 24,
-                yearlyRevenue: val('yearlyRevenue'),
-                revenueGrowth: val('revenueGrowth'),
-                operatingCosts: val('operatingCosts'),
-                maintenanceCosts: val('maintenanceCosts'),
-                bestCaseMultiplier: val('bestCaseMultiplier'),
-                worstCaseMultiplier: val('worstCaseMultiplier')
-            };
-
-            const exp = FinanceEngine.analyze(projectData);
-            const best = FinanceEngine.analyze({...projectData, yearlyRevenue: projectData.yearlyRevenue * projectData.bestCaseMultiplier});
-            const worst = FinanceEngine.analyze({...projectData, yearlyRevenue: projectData.yearlyRevenue * projectData.worstCaseMultiplier});
-
-            UIUpdater.updateDashboard(exp);
-            UIUpdater.updateScenarios(exp, best, worst);
-            ChartManager.createCharts(exp, best, worst, projectData.projectDuration);
-            
-            const recDiv = document.getElementById('recommendations');
-            const isPos = exp.roi > 0;
-            recDiv.innerHTML = `
-                <div class="flex items-center gap-3 p-3 rounded ${isPos ? 'bg-emerald-500/20' : 'bg-red-500/20'}">
-                    <span class="text-2xl">${isPos ? '✅' : '⚠️'}</span>
-                    <p>${isPos ? (currentLanguage==='es'?'Proyecto viable financieramente.':'Financially viable project.') : (currentLanguage==='es'?'Revisar estructura de costos.':'Review cost structure.')}</p>
-                </div>
-            `;
-            
-            UIUpdater.showMessage('success', 'Analysis Complete');
-            document.getElementById('dashboard').scrollIntoView({behavior: 'smooth'});
-
-        } catch (err) {
-            console.error("Critical Engine Error:", err);
-            alert("Error in calculation engine: " + err.message);
-        } finally {
-            UIUpdater.toggleLoading(false);
-        }
-    }, 600);
+// Close modal with ESC key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeGuideModal();
+    }
 });
 
-// Initialization
-window.addEventListener('load', () => {
-    switchLanguage('es');
-});
+// ====================================
+// Field Quality Assessment System
+// ====================================
 
-// Quality Assessment (Compatibility)
 const qualityAssessment = {
-    assessField: (id, val) => {
-        const len = val.length;
-        const el = document.getElementById(`quality-${id}`);
-        if(el) {
-            el.textContent = len > 20 ? (currentLanguage==='es'?'✓ Entrada válida':'✓ Valid input') : '...';
-            el.className = `field-quality show ${len > 20 ? 'good' : 'warning'}`;
+    assessField(fieldId, value) {
+        const assessments = {
+            stratProjectName: this.assessProjectName(value),
+            problemOpportunity: this.assessProblemOpportunity(value),
+            proposedSolution: this.assessProposedSolution(value),
+            successMetrics: this.assessSuccessMetrics(value)
+        };
+        
+        return assessments[fieldId] || { score: 0, feedback: '', level: 'poor' };
+    },
+    
+    assessProjectName(value) {
+        const words = value.trim().split(/\s+/);
+        const length = value.trim().length;
+        let score = 0;
+        let feedback = '';
+        
+        if (length === 0) {
+            return { score: 0, feedback: '', level: 'poor' };
         }
+        
+        // Check length (3-7 words ideal)
+        if (words.length >= 3 && words.length <= 7) {
+            score += 40;
+        } else if (words.length < 3) {
+            feedback = currentLanguage === 'es' ? 
+                '💡 Sugerencia: Agregue más detalles (3-7 palabras ideal)' : 
+                '💡 Suggestion: Add more detail (3-7 words ideal)';
+        } else {
+            feedback = currentLanguage === 'es' ?
+                '💡 Sugerencia: Sea más conciso (3-7 palabras ideal)' :
+                '💡 Suggestion: Be more concise (3-7 words ideal)';
+        }
+        
+        // Check for action words
+        const actionWords = ['implement', 'transform', 'optimize', 'develop', 'create', 'build', 'enhance', 
+                            'implementar', 'transformar', 'optimizar', 'desarrollar', 'crear', 'construir', 'mejorar'];
+        if (actionWords.some(word => value.toLowerCase().includes(word))) {
+            score += 30;
+        }
+        
+        // Check capitalization
+        if (words.every(word => word[0] === word[0].toUpperCase())) {
+            score += 30;
+        }
+        
+        if (score >= 70 && feedback === '') {
+            feedback = currentLanguage === 'es' ?
+                '✓ Excelente: Nombre claro y profesional' :
+                '✓ Excellent: Clear and professional name';
+        }
+        
+        return {
+            score,
+            feedback,
+            level: score >= 70 ? 'good' : score >= 40 ? 'warning' : 'poor'
+        };
+    },
+    
+    assessProblemOpportunity(value) {
+        const length = value.trim().length;
+        const sentences = value.split(/[.!?]+/).filter(s => s.trim().length > 0);
+        let score = 0;
+        let feedback = '';
+        
+        if (length === 0) {
+            return { score: 0, feedback: '', level: 'poor' };
+        }
+        
+        // Check minimum length
+        if (length >= 150) score += 30;
+        else feedback = currentLanguage === 'es' ?
+            '💡 Agregue más detalles sobre el problema (mínimo 150 caracteres)' :
+            '💡 Add more detail about the problem (minimum 150 characters)';
+        
+        // Check for multiple sentences
+        if (sentences.length >= 2) score += 20;
+        
+        // Check for quantifiable data (numbers or percentages)
+        if (/\d+/.test(value)) score += 25;
+        else if (feedback === '') feedback = currentLanguage === 'es' ?
+            '💡 Incluya datos cuantificables (números, porcentajes, costos)' :
+            '💡 Include quantifiable data (numbers, percentages, costs)';
+        
+        // Check for business impact keywords
+        const impactWords = ['cost', 'time', 'efficiency', 'revenue', 'customer', 'risk', 'hours', 'dollars',
+                            'costo', 'tiempo', 'eficiencia', 'ingresos', 'cliente', 'riesgo', 'horas', 'dólares'];
+        if (impactWords.some(word => value.toLowerCase().includes(word))) {
+            score += 25;
+        }
+        
+        if (score >= 70 && feedback === '') {
+            feedback = currentLanguage === 'es' ?
+                '✓ Excelente: Problema bien definido con impacto cuantificable' :
+                '✓ Excellent: Well-defined problem with quantifiable impact';
+        }
+        
+        return {
+            score,
+            feedback,
+            level: score >= 70 ? 'good' : score >= 40 ? 'warning' : 'poor'
+        };
+    },
+    
+    assessProposedSolution(value) {
+        const length = value.trim().length;
+        const sentences = value.split(/[.!?]+/).filter(s => s.trim().length > 0);
+        let score = 0;
+        let feedback = '';
+        
+        if (length === 0) {
+            return { score: 0, feedback: '', level: 'poor' };
+        }
+        
+        // Check minimum length
+        if (length >= 150) score += 30;
+        else feedback = currentLanguage === 'es' ?
+            '💡 Describa la solución con más detalle (mínimo 150 caracteres)' :
+            '💡 Describe the solution in more detail (minimum 150 characters)';
+        
+        // Check for multiple sentences
+        if (sentences.length >= 2) score += 20;
+        
+        // Check for scope definition
+        const scopeWords = ['phase', 'scope', 'will', 'include', 'feature', 
+                           'fase', 'alcance', 'incluir', 'característica'];
+        if (scopeWords.some(word => value.toLowerCase().includes(word))) {
+            score += 25;
+        } else if (feedback === '') {
+            feedback = currentLanguage === 'es' ?
+                '💡 Defina el alcance de la Fase 1 claramente' :
+                '💡 Define Phase 1 scope clearly';
+        }
+        
+        // Check for capability focus
+        const capabilityWords = ['capability', 'enable', 'allow', 'provide', 'automate',
+                                'capacidad', 'permitir', 'proporcionar', 'automatizar'];
+        if (capabilityWords.some(word => value.toLowerCase().includes(word))) {
+            score += 25;
+        }
+        
+        if (score >= 70 && feedback === '') {
+            feedback = currentLanguage === 'es' ?
+                '✓ Excelente: Solución bien estructurada con alcance claro' :
+                '✓ Excellent: Well-structured solution with clear scope';
+        }
+        
+        return {
+            score,
+            feedback,
+            level: score >= 70 ? 'good' : score >= 40 ? 'warning' : 'poor'
+        };
+    },
+    
+    assessSuccessMetrics(value) {
+        const length = value.trim().length;
+        let score = 0;
+        let feedback = '';
+        
+        if (length === 0) {
+            return { score: 0, feedback: '', level: 'poor' };
+        }
+        
+        // Check minimum length
+        if (length >= 100) score += 25;
+        else feedback = currentLanguage === 'es' ?
+            '💡 Proporcione más detalles sobre las métricas (mínimo 100 caracteres)' :
+            '💡 Provide more detail about metrics (minimum 100 characters)';
+        
+        // Check for numbers and percentages
+        if (/\d+/.test(value)) score += 25;
+        else if (feedback === '') feedback = currentLanguage === 'es' ?
+            '💡 Incluya objetivos cuantificables con números específicos' :
+            '💡 Include quantifiable goals with specific numbers';
+        
+        // Check for timeframe
+        const timeWords = ['quarter', 'month', 'week', 'year', 'day',
+                          'trimestre', 'mes', 'semana', 'año', 'día'];
+        if (timeWords.some(word => value.toLowerCase().includes(word))) {
+            score += 25;
+        } else if (feedback === '') {
+            feedback = currentLanguage === 'es' ?
+                '💡 Especifique plazos para los objetivos' :
+                '💡 Specify timeframes for objectives';
+        }
+        
+        // Check for metric keywords
+        const metricWords = ['reduce', 'increase', 'improve', 'achieve', 'target', 'goal',
+                            'reducir', 'aumentar', 'mejorar', 'lograr', 'objetivo', 'meta'];
+        if (metricWords.some(word => value.toLowerCase().includes(word))) {
+            score += 25;
+        }
+        
+        if (score >= 75 && feedback === '') {
+            feedback = currentLanguage === 'es' ?
+                '✓ Excelente: Métricas SMART bien definidas' :
+                '✓ Excellent: Well-defined SMART metrics';
+        }
+        
+        return {
+            score,
+            feedback,
+            level: score >= 75 ? 'good' : score >= 50 ? 'warning' : 'poor'
+        };
     }
 };
 
-['stratProjectName', 'problemOpportunity', 'proposedSolution', 'successMetrics'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.addEventListener('input', (e) => {
-        qualityAssessment.assessField(id, e.target.value);
-        const bar = document.getElementById('progress-fill');
-        const txt = document.getElementById('overall-score');
-        if(bar) bar.style.width = '75%';
-        if(txt) txt.textContent = '75/100';
+// Update field quality indicators
+function updateFieldQuality(fieldId, value) {
+    const assessment = qualityAssessment.assessField(fieldId, value);
+    const qualityDiv = document.getElementById(`quality-${fieldId}`);
+    
+    if (qualityDiv && assessment.feedback) {
+        qualityDiv.textContent = assessment.feedback;
+        qualityDiv.className = `field-quality show ${assessment.level}`;
+    } else if (qualityDiv) {
+        qualityDiv.className = 'field-quality';
+    }
+    
+    // Update overall progress
+    updateOverallProgress();
+}
+
+// Update overall progress and checklist
+function updateOverallProgress() {
+    const fields = ['stratProjectName', 'problemOpportunity', 'proposedSolution', 'successMetrics'];
+    let totalScore = 0;
+    let maxScore = 0;
+    const checklist = [];
+    
+    fields.forEach(fieldId => {
+        const element = document.getElementById(fieldId);
+        const value = element ? element.value : '';
+        const assessment = qualityAssessment.assessField(fieldId, value);
+        
+        totalScore += assessment.score;
+        maxScore += 100;
+        
+        const labels = {
+            en: {
+                stratProjectName: 'Clear and professional project name',
+                problemOpportunity: 'Problem defined with quantifiable impact',
+                proposedSolution: 'Solution structured with clear scope',
+                successMetrics: 'SMART metrics with timeframes'
+            },
+            es: {
+                stratProjectName: 'Nombre de proyecto claro y profesional',
+                problemOpportunity: 'Problema definido con impacto cuantificable',
+                proposedSolution: 'Solución estructurada con alcance claro',
+                successMetrics: 'Métricas SMART con plazos definidos'
+            },
+            pt: {
+                stratProjectName: 'Nome do projeto claro e profissional',
+                problemOpportunity: 'Problema definido com impacto quantificável',
+                proposedSolution: 'Solução estruturada com escopo claro',
+                successMetrics: 'Métricas SMART com prazos definidos'
+            }
+        };
+        
+        checklist.push({
+            label: labels[currentLanguage][fieldId],
+            completed: assessment.score >= 70
+        });
     });
+    
+    const overallScore = Math.round((totalScore / maxScore) * 100);
+    
+    // Update score display
+    const scoreElement = document.getElementById('overall-score');
+    if (scoreElement) {
+        scoreElement.textContent = `${overallScore}/100`;
+    }
+    
+    // Update progress bar
+    const progressFill = document.getElementById('progress-fill');
+    if (progressFill) {
+        progressFill.style.width = `${overallScore}%`;
+    }
+    
+    // Update checklist
+    const checklistDiv = document.getElementById('progress-checklist');
+    if (checklistDiv) {
+        checklistDiv.innerHTML = checklist.map(item => `
+            <div class="checklist-item ${item.completed ? 'completed' : ''}">
+                <span class="check-icon">${item.completed ? '✓' : '○'}</span>
+                <span>${item.label}</span>
+            </div>
+        `).join('');
+    }
+}
+
+// Add event listeners to strategic form fields
+['stratProjectName', 'problemOpportunity', 'proposedSolution', 'successMetrics'].forEach(fieldId => {
+    const element = document.getElementById(fieldId);
+    if (element) {
+        element.addEventListener('input', function() {
+            updateFieldQuality(fieldId, this.value);
+        });
+        
+        // Trigger initial assessment
+        setTimeout(() => updateFieldQuality(fieldId, element.value), 100);
+    }
+});
+
+// Initialize with sample data on page load for demo purposes
+window.addEventListener('load', function() {
+    // Set default values for financial calculator (step 2)
+    document.getElementById('projectName').value = 'Iniciativa de Transformación Digital';
+    document.getElementById('initialInvestment').value = '150000';
+    document.getElementById('yearlyRevenue').value = '75000';
+    document.getElementById('operatingCosts').value = '15000';
+    document.getElementById('maintenanceCosts').value = '5000';
+    
+    // Initialize progress indicator
+    updateOverallProgress();
+    
+    // Show welcome message
+    setTimeout(() => {
+        UIUpdater.showMessage('info', '👋 ¡Bienvenido! Comience con el análisis estratégico de su proyecto.');
+    }, 500);
 });
