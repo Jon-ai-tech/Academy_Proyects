@@ -1,10 +1,10 @@
 /**
  * Vanguard Crux | Financial Modeling Core
- * v2.4.0-stable
+ * v2.0-stable 
  */
 
 // ==========================================
-// 1. CONFIGURATION & LOCALIZATION
+// 1. CONFIGURATION & STATE
 // ==========================================
 
 let currentLanguage = 'es';
@@ -12,10 +12,58 @@ let projectData = null;
 let strategicData = null;
 let charts = { cashflow: null, roi: null, scenarios: null };
 
-// UI Text Resources
+// ==========================================
+// 2. LOCALIZATION RESOURCES (Restored)
+// ==========================================
+
 const LOCALE_RESOURCES = {
     en: {
+        // UI Structure
         'header-title': 'Business Case Analyzer Pro',
+        'header-subtitle': 'Professional Financial Analysis & ROI Calculator',
+        'section-strategic': 'Strategic Analysis',
+        'strategic-description': 'Start by defining the strategic foundation of your business case. Our AI will analyze the viability and provide insights.',
+        'section-dashboard': 'Financial Dashboard',
+        'section-project-info': 'Project Information',
+        'section-visual-analysis': 'Visual Analysis',
+        'section-scenarios': 'Scenario Comparison',
+        'section-recommendations': 'Smart Recommendations',
+        'section-export': 'Export Report',
+
+        // Form Labels & Placeholders
+        'label-stratProjectName': 'Project Name',
+        'ph-stratProjectName': 'e.g., AI-Powered Customer Support Automation',
+        'label-problemOpportunity': 'Problem/Opportunity Identified',
+        'ph-problemOpportunity': 'e.g., Our support team spends 10 hours/week manually classifying tickets...',
+        'label-proposedSolution': 'Proposed Solution',
+        'ph-proposedSolution': 'e.g., Implement an AI triage agent for instant ticket classification...',
+        'label-successMetrics': 'Success Metrics / ROI',
+        'ph-successMetrics': 'e.g., Reduce classification time by 90% in Q1...',
+        
+        'label-projectName': 'Project Name',
+        'ph-projectName': 'e.g., Digital Transformation',
+        'label-initialInvestment': 'Initial Investment ($)',
+        'label-discountRate': 'Discount Rate (%)',
+        'label-projectDuration': 'Project Duration (months)',
+        'label-yearlyRevenue': 'Annual Revenue Increase ($)',
+        'label-revenueGrowth': 'Revenue Growth Rate (%)',
+        'label-operatingCosts': 'Annual Operating Costs ($)',
+        'label-maintenanceCosts': 'Annual Maintenance Costs ($)',
+        'label-bestCaseMultiplier': 'Best Case Multiplier',
+        'label-worstCaseMultiplier': 'Worst Case Multiplier',
+
+        // Buttons & Tabs
+        'btn-generate-analysis': 'Generate Analysis',
+        'btn-continue-financial': 'Continue to Financial Projection',
+        'btn-back-step1': '← Back to Strategic Analysis',
+        'btn-calculate': 'Calculate Analysis',
+        'btn-reset': 'Reset Form',
+        'btn-export': 'Export Full Report to PDF',
+        'tab-cashflow': 'Cash Flow Over Time',
+        'tab-roi': 'ROI Comparison',
+        'tab-scenarios': 'Scenario Analysis',
+
+        // Dynamic System Status
         'status-positive-return': '✓ Positive Return',
         'status-negative-return': '✗ Negative Return',
         'status-creates-value': '✓ Creates Value',
@@ -27,10 +75,56 @@ const LOCALE_RESOURCES = {
         'scenario-worst': 'Downside Case',
         'unit-months': 'mo',
         'viability-high': 'HIGH VIABILITY - Proceed to Financials',
-        'viability-review': 'REVIEW NEEDED - Refine Strategy'
+        'viability-review': 'REVIEW NEEDED - Refine Strategy',
+        'analysis-title': 'Strategic Analysis Result'
     },
     es: {
+        // UI Structure
         'header-title': 'Analizador de Casos de Negocio Pro',
+        'header-subtitle': 'Análisis Financiero Profesional y Calculadora de ROI',
+        'section-strategic': 'Análisis Estratégico',
+        'strategic-description': 'Comience definiendo la base estratégica de su caso de negocio. El motor analizará la viabilidad.',
+        'section-dashboard': 'Panel Financiero',
+        'section-project-info': 'Información del Proyecto',
+        'section-visual-analysis': 'Análisis Visual',
+        'section-scenarios': 'Comparación de Escenarios',
+        'section-recommendations': 'Recomendaciones Inteligentes',
+        'section-export': 'Exportar Reporte',
+
+        // Form Labels & Placeholders
+        'label-stratProjectName': 'Nombre del Proyecto',
+        'ph-stratProjectName': 'ej., Automatización de soporte al cliente basada en IA',
+        'label-problemOpportunity': 'Problema/Oportunidad',
+        'ph-problemOpportunity': 'ej., Nuestro equipo de soporte pasa 10 horas/semana clasificando tickets...',
+        'label-proposedSolution': 'Solución Propuesta',
+        'ph-proposedSolution': 'ej., Implementar un agente de clasificación de tickets basado en IA...',
+        'label-successMetrics': 'Métricas de Éxito / ROI',
+        'ph-successMetrics': 'ej., Reducir el tiempo de clasificación en un 90% en Q1...',
+
+        'label-projectName': 'Nombre del Proyecto',
+        'ph-projectName': 'ej., Transformación Digital',
+        'label-initialInvestment': 'Inversión Inicial ($)',
+        'label-discountRate': 'Tasa de Descuento (%)',
+        'label-projectDuration': 'Duración del Proyecto (meses)',
+        'label-yearlyRevenue': 'Incremento de Ingresos ($)',
+        'label-revenueGrowth': 'Tasa Crecimiento Ingresos (%)',
+        'label-operatingCosts': 'Costos Operativos Anuales ($)',
+        'label-maintenanceCosts': 'Costos Mantenimiento Anuales ($)',
+        'label-bestCaseMultiplier': 'Multiplicador Mejor Caso',
+        'label-worstCaseMultiplier': 'Multiplicador Peor Caso',
+
+        // Buttons & Tabs
+        'btn-generate-analysis': 'Generar Análisis',
+        'btn-continue-financial': 'Continuar a Proyección Financiera',
+        'btn-back-step1': '← Volver a Análisis Estratégico',
+        'btn-calculate': 'Calcular Análisis',
+        'btn-reset': 'Reiniciar Formulario',
+        'btn-export': 'Exportar Reporte PDF',
+        'tab-cashflow': 'Flujo de Caja en el Tiempo',
+        'tab-roi': 'Comparación de ROI',
+        'tab-scenarios': 'Análisis de Escenarios',
+
+        // Dynamic System Status
         'status-positive-return': '✓ Retorno Positivo',
         'status-negative-return': '✗ Retorno Negativo',
         'status-creates-value': '✓ Genera Valor',
@@ -42,22 +136,69 @@ const LOCALE_RESOURCES = {
         'scenario-worst': 'Caso Pesimista',
         'unit-months': 'meses',
         'viability-high': 'ALTA VIABILIDAD - Proceder a Financiero',
-        'viability-review': 'REVISIÓN REQUERIDA - Refinar Estrategia'
+        'viability-review': 'REVISIÓN REQUERIDA - Refinar Estrategia',
+        'analysis-title': 'Resultado del Análisis Estratégico'
     },
     pt: {
+        // UI Structure
         'header-title': 'Analisador de Casos de Negócio Pro',
+        'header-subtitle': 'Análise Financeira Profissional e Calculadora de ROI',
+        'section-strategic': 'Análise Estratégica',
+        'strategic-description': 'Comece definindo a base estratégica do seu caso de negócio.',
+        'section-dashboard': 'Painel Financeiro',
+        'section-project-info': 'Informações do Projeto',
+        'section-visual-analysis': 'Análise Visual',
+        'section-scenarios': 'Comparação de Cenários',
+        'section-recommendations': 'Recomendações Inteligentes',
+        'section-export': 'Exportar Relatório',
+
+        // Form Labels & Placeholders
+        'label-stratProjectName': 'Nome do Projeto',
+        'ph-stratProjectName': 'ex., Automação de suporte ao cliente',
+        'label-problemOpportunity': 'Problema/Oportunidade',
+        'ph-problemOpportunity': 'ex., Nossa equipe gasta 10 horas/semana...',
+        'label-proposedSolution': 'Solução Proposta',
+        'ph-proposedSolution': 'ex., Implementar um agente de triagem...',
+        'label-successMetrics': 'Métricas de Sucesso / ROI',
+        'ph-successMetrics': 'ex., Reduzir o tempo de classificação em 90%...',
+
+        'label-projectName': 'Nome do Projeto',
+        'ph-projectName': 'ex., Transformação Digital',
+        'label-initialInvestment': 'Investimento Inicial ($)',
+        'label-discountRate': 'Taxa de Desconto (%)',
+        'label-projectDuration': 'Duração do Projeto (meses)',
+        'label-yearlyRevenue': 'Aumento de Receita Anual ($)',
+        'label-revenueGrowth': 'Taxa de Crescimento (%)',
+        'label-operatingCosts': 'Custos Operacionais ($)',
+        'label-maintenanceCosts': 'Custos de Manutenção ($)',
+        'label-bestCaseMultiplier': 'Multiplicador Melhor Caso',
+        'label-worstCaseMultiplier': 'Multiplicador Pior Caso',
+
+        // Buttons & Tabs
+        'btn-generate-analysis': 'Gerar Análise',
+        'btn-continue-financial': 'Continuar para Financeiro',
+        'btn-back-step1': '← Voltar para Estratégico',
+        'btn-calculate': 'Calcular Análise',
+        'btn-reset': 'Redefinir Formulário',
+        'btn-export': 'Exportar Relatório PDF',
+        'tab-cashflow': 'Fluxo de Caixa',
+        'tab-roi': 'Comparação de ROI',
+        'tab-scenarios': 'Análise de Cenários',
+
+        // Dynamic System Status
         'status-positive-return': '✓ Retorno Positivo',
         'status-negative-return': '✗ Retorno Negativo',
         'status-creates-value': '✓ Gera Valor',
         'status-destroys-value': '✗ Destrói Valor',
-        'chart-monthly-cashflow': 'Fluxo Mensal Líquido',
+        'chart-monthly-cashflow': 'Fluxo Mensual Líquido',
         'chart-cumulative-cashflow': 'Posição Acumulada',
         'scenario-expected': 'Caso Base',
         'scenario-best': 'Caso Otimista',
         'scenario-worst': 'Caso Pessimista',
         'unit-months': 'meses',
         'viability-high': 'ALTA VIABILIDADE - Prosseguir',
-        'viability-review': 'REVISÃO NECESSÁRIA - Refinar'
+        'viability-review': 'REVISÃO NECESSÁRIA - Refinar',
+        'analysis-title': 'Resultado da Análise Estratégica'
     }
 };
 
@@ -84,7 +225,7 @@ const GUIDE_CONTENT = {
 };
 
 // ==========================================
-// 2. CORE ENGINES (Logic Layer)
+// 3. CORE ENGINES (Logic Layer)
 // ==========================================
 
 /* FinanceEngine: Handles high-precision financial arithmetic */
@@ -177,7 +318,7 @@ const StrategicScorer = {
 };
 
 // ==========================================
-// 3. UI CONTROLLERS & INTERACTION
+// 4. UI CONTROLLERS & INTERACTION
 // ==========================================
 
 const UIUpdater = {
@@ -279,8 +420,45 @@ const ChartManager = {
 };
 
 // ==========================================
-// 4. EVENT HANDLERS (The "Glue")
+// 5. EVENT HANDLERS (The "Glue")
 // ==========================================
+
+// Helper to update form fields
+const updateFormText = (lang) => {
+    const res = LOCALE_RESOURCES[lang];
+    // List of element IDs that match dictionary keys
+    const textIds = [
+        'header-title', 'header-subtitle', 'section-strategic', 'strategic-description',
+        'section-dashboard', 'section-project-info', 'section-visual-analysis',
+        'section-scenarios', 'section-recommendations', 'section-export',
+        'label-stratProjectName', 'label-problemOpportunity', 'label-proposedSolution', 'label-successMetrics',
+        'label-projectName', 'label-initialInvestment', 'label-discountRate', 'label-projectDuration',
+        'label-yearlyRevenue', 'label-revenueGrowth', 'label-operatingCosts', 'label-maintenanceCosts',
+        'label-bestCaseMultiplier', 'label-worstCaseMultiplier',
+        'btn-generate-analysis', 'btn-continue-financial', 'btn-back-step1', 'btn-calculate', 'btn-reset', 'btn-export',
+        'tab-cashflow', 'tab-roi', 'tab-scenarios', 'analysis-title'
+    ];
+    
+    // Update Text Content
+    textIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && res[id]) el.textContent = res[id];
+    });
+
+    // Update Placeholders map (ID -> Key)
+    const phMap = {
+        'stratProjectName': 'ph-stratProjectName',
+        'problemOpportunity': 'ph-problemOpportunity',
+        'proposedSolution': 'ph-proposedSolution',
+        'successMetrics': 'ph-successMetrics',
+        'projectName': 'ph-projectName'
+    };
+    
+    Object.keys(phMap).forEach(id => {
+        const el = document.getElementById(id);
+        if (el && res[phMap[id]]) el.placeholder = res[phMap[id]];
+    });
+};
 
 // Global functions for HTML onclick events
 window.switchTab = function(tabName) {
@@ -298,10 +476,9 @@ window.switchTab = function(tabName) {
 
 window.switchLanguage = function(lang) {
     currentLanguage = lang;
-    const res = LOCALE_RESOURCES[lang];
     
-    // Update Header
-    if(document.getElementById('header-title')) document.getElementById('header-title').textContent = res['header-title'];
+    // Update all text elements
+    updateFormText(lang);
     
     // Update Buttons State
     ['en', 'es', 'pt'].forEach(l => {
@@ -312,7 +489,7 @@ window.switchLanguage = function(lang) {
         }
     });
 
-    // If we have data, refresh analysis to update text
+    // Refresh charts/analysis if data exists to update localized labels
     if (projectData) document.getElementById('projectForm').dispatchEvent(new Event('submit'));
 };
 
@@ -346,7 +523,7 @@ window.goToStep1 = function() {
 window.resetForm = function() {
     if(confirm('Reiniciar formulario? / Reset form?')) {
         document.getElementById('projectForm').reset();
-        window.location.reload(); // Cleanest reset
+        window.location.reload(); 
     }
 };
 
@@ -438,7 +615,12 @@ document.getElementById('projectForm')?.addEventListener('submit', function(e) {
     }, 600);
 });
 
-// Quality Assessment (Simplified for Compatibility)
+// Auto-run translation on load to ensure labels match default lang
+window.addEventListener('load', () => {
+    switchLanguage('es');
+});
+
+// Quality Assessment
 const qualityAssessment = {
     assessField: (id, val) => {
         const len = val.length;
@@ -452,15 +634,13 @@ const qualityAssessment = {
     }
 };
 
-// Auto-attach listeners for quality
 ['stratProjectName', 'problemOpportunity', 'proposedSolution', 'successMetrics'].forEach(id => {
     const el = document.getElementById(id);
     if(el) el.addEventListener('input', (e) => {
         qualityAssessment.assessField(id, e.target.value);
-        // Update progress bar stub
         const bar = document.getElementById('progress-fill');
         const txt = document.getElementById('overall-score');
-        if(bar) bar.style.width = '75%'; // Static for aesthetic feel
+        if(bar) bar.style.width = '75%';
         if(txt) txt.textContent = '75/100';
     });
 });
