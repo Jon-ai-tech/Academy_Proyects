@@ -13,12 +13,11 @@ let strategicData = null;
 let charts = { cashflow: null, roi: null, scenarios: null };
 
 // ==========================================
-// 2. LOCALIZATION RESOURCES (Restored)
+// 2. LOCALIZATION RESOURCES
 // ==========================================
 
 const LOCALE_RESOURCES = {
     en: {
-        // UI Structure
         'header-title': 'Business Case Analyzer Pro',
         'header-subtitle': 'Professional Financial Analysis & ROI Calculator',
         'section-strategic': 'Strategic Analysis',
@@ -29,8 +28,6 @@ const LOCALE_RESOURCES = {
         'section-scenarios': 'Scenario Comparison',
         'section-recommendations': 'Smart Recommendations',
         'section-export': 'Export Report',
-
-        // Form Labels & Placeholders
         'label-stratProjectName': 'Project Name',
         'ph-stratProjectName': 'e.g., AI-Powered Customer Support Automation',
         'label-problemOpportunity': 'Problem/Opportunity Identified',
@@ -39,7 +36,6 @@ const LOCALE_RESOURCES = {
         'ph-proposedSolution': 'e.g., Implement an AI triage agent for instant ticket classification...',
         'label-successMetrics': 'Success Metrics / ROI',
         'ph-successMetrics': 'e.g., Reduce classification time by 90% in Q1...',
-        
         'label-projectName': 'Project Name',
         'ph-projectName': 'e.g., Digital Transformation',
         'label-initialInvestment': 'Initial Investment ($)',
@@ -51,8 +47,6 @@ const LOCALE_RESOURCES = {
         'label-maintenanceCosts': 'Annual Maintenance Costs ($)',
         'label-bestCaseMultiplier': 'Best Case Multiplier',
         'label-worstCaseMultiplier': 'Worst Case Multiplier',
-
-        // Buttons & Tabs
         'btn-generate-analysis': 'Generate Analysis',
         'btn-continue-financial': 'Continue to Financial Projection',
         'btn-back-step1': '← Back to Strategic Analysis',
@@ -62,8 +56,6 @@ const LOCALE_RESOURCES = {
         'tab-cashflow': 'Cash Flow Over Time',
         'tab-roi': 'ROI Comparison',
         'tab-scenarios': 'Scenario Analysis',
-
-        // Dynamic System Status
         'status-positive-return': '✓ Positive Return',
         'status-negative-return': '✗ Negative Return',
         'status-creates-value': '✓ Creates Value',
@@ -79,7 +71,6 @@ const LOCALE_RESOURCES = {
         'analysis-title': 'Strategic Analysis Result'
     },
     es: {
-        // UI Structure
         'header-title': 'Analizador de Casos de Negocio Pro',
         'header-subtitle': 'Análisis Financiero Profesional y Calculadora de ROI',
         'section-strategic': 'Análisis Estratégico',
@@ -90,8 +81,6 @@ const LOCALE_RESOURCES = {
         'section-scenarios': 'Comparación de Escenarios',
         'section-recommendations': 'Recomendaciones Inteligentes',
         'section-export': 'Exportar Reporte',
-
-        // Form Labels & Placeholders
         'label-stratProjectName': 'Nombre del Proyecto',
         'ph-stratProjectName': 'ej., Automatización de soporte al cliente basada en IA',
         'label-problemOpportunity': 'Problema/Oportunidad',
@@ -100,7 +89,6 @@ const LOCALE_RESOURCES = {
         'ph-proposedSolution': 'ej., Implementar un agente de clasificación de tickets basado en IA...',
         'label-successMetrics': 'Métricas de Éxito / ROI',
         'ph-successMetrics': 'ej., Reducir el tiempo de clasificación en un 90% en Q1...',
-
         'label-projectName': 'Nombre del Proyecto',
         'ph-projectName': 'ej., Transformación Digital',
         'label-initialInvestment': 'Inversión Inicial ($)',
@@ -112,8 +100,6 @@ const LOCALE_RESOURCES = {
         'label-maintenanceCosts': 'Costos Mantenimiento Anuales ($)',
         'label-bestCaseMultiplier': 'Multiplicador Mejor Caso',
         'label-worstCaseMultiplier': 'Multiplicador Peor Caso',
-
-        // Buttons & Tabs
         'btn-generate-analysis': 'Generar Análisis',
         'btn-continue-financial': 'Continuar a Proyección Financiera',
         'btn-back-step1': '← Volver a Análisis Estratégico',
@@ -123,8 +109,6 @@ const LOCALE_RESOURCES = {
         'tab-cashflow': 'Flujo de Caja en el Tiempo',
         'tab-roi': 'Comparación de ROI',
         'tab-scenarios': 'Análisis de Escenarios',
-
-        // Dynamic System Status
         'status-positive-return': '✓ Retorno Positivo',
         'status-negative-return': '✗ Retorno Negativo',
         'status-creates-value': '✓ Genera Valor',
@@ -140,7 +124,6 @@ const LOCALE_RESOURCES = {
         'analysis-title': 'Resultado del Análisis Estratégico'
     },
     pt: {
-        // UI Structure
         'header-title': 'Analisador de Casos de Negócio Pro',
         'header-subtitle': 'Análise Financeira Profissional e Calculadora de ROI',
         'section-strategic': 'Análise Estratégica',
@@ -151,8 +134,6 @@ const LOCALE_RESOURCES = {
         'section-scenarios': 'Comparação de Cenários',
         'section-recommendations': 'Recomendações Inteligentes',
         'section-export': 'Exportar Relatório',
-
-        // Form Labels & Placeholders
         'label-stratProjectName': 'Nome do Projeto',
         'ph-stratProjectName': 'ex., Automação de suporte ao cliente',
         'label-problemOpportunity': 'Problema/Oportunidade',
@@ -161,7 +142,6 @@ const LOCALE_RESOURCES = {
         'ph-proposedSolution': 'ex., Implementar um agente de triagem...',
         'label-successMetrics': 'Métricas de Sucesso / ROI',
         'ph-successMetrics': 'ex., Reduzir o tempo de classificação em 90%...',
-
         'label-projectName': 'Nome do Projeto',
         'ph-projectName': 'ex., Transformação Digital',
         'label-initialInvestment': 'Investimento Inicial ($)',
@@ -173,8 +153,6 @@ const LOCALE_RESOURCES = {
         'label-maintenanceCosts': 'Custos de Manutenção ($)',
         'label-bestCaseMultiplier': 'Multiplicador Melhor Caso',
         'label-worstCaseMultiplier': 'Multiplicador Pior Caso',
-
-        // Buttons & Tabs
         'btn-generate-analysis': 'Gerar Análise',
         'btn-continue-financial': 'Continuar para Financeiro',
         'btn-back-step1': '← Voltar para Estratégico',
@@ -184,8 +162,6 @@ const LOCALE_RESOURCES = {
         'tab-cashflow': 'Fluxo de Caixa',
         'tab-roi': 'Comparação de ROI',
         'tab-scenarios': 'Análise de Cenários',
-
-        // Dynamic System Status
         'status-positive-return': '✓ Retorno Positivo',
         'status-negative-return': '✗ Retorno Negativo',
         'status-creates-value': '✓ Gera Valor',
@@ -202,7 +178,6 @@ const LOCALE_RESOURCES = {
     }
 };
 
-// Contextual Help Content
 const GUIDE_CONTENT = {
     es: {
         projectName: { title: "Nombre del Proyecto", content: "<p>Use un nombre orientado a la acción (ej: 'Optimización Logística').</p>" },
@@ -228,7 +203,6 @@ const GUIDE_CONTENT = {
 // 3. CORE ENGINES (Logic Layer)
 // ==========================================
 
-/* FinanceEngine: Handles high-precision financial arithmetic */
 const FinanceEngine = {
     calcROI: (inv, ret) => inv === 0 ? 0 : ((ret - inv) / inv) * 100,
     
@@ -250,7 +224,6 @@ const FinanceEngine = {
     },
 
     calcIRR: (flows, guess = 0.1) => {
-        // Newton-Raphson Method
         const maxIter = 50, eps = 1e-4;
         let r = guess;
         for (let i = 0; i < maxIter; i++) {
@@ -291,7 +264,6 @@ const FinanceEngine = {
     }
 };
 
-/* StrategicScorer: Heuristic analysis for project validation */
 const StrategicScorer = {
     evaluate: (input) => {
         const text = `${input.projectName} ${input.problem} ${input.solution} ${input.metrics}`.toLowerCase();
@@ -318,12 +290,13 @@ const StrategicScorer = {
 };
 
 // ==========================================
-// 4. UI CONTROLLERS & INTERACTION
+// 4. UI CONTROLLERS
 // ==========================================
 
 const UIUpdater = {
     format: (n, isCurrency = false) => {
         const loc = currentLanguage === 'es' ? 'es-ES' : 'en-US';
+        if (n === undefined || n === null || isNaN(n)) return "0";
         return n.toLocaleString(loc, { maximumFractionDigits: isCurrency ? 0 : 2 });
     },
 
@@ -333,7 +306,6 @@ const UIUpdater = {
         document.getElementById('payback-value').textContent = m.payback.toFixed(1);
         document.getElementById('irr-value').textContent = `${UIUpdater.format(m.irr)}%`;
         
-        // Update Status Texts
         const res = LOCALE_RESOURCES[currentLanguage];
         document.getElementById('roi-status').textContent = m.roi > 0 ? res['status-positive-return'] : res['status-negative-return'];
         document.getElementById('npv-status').textContent = m.npv > 0 ? res['status-creates-value'] : res['status-destroys-value'];
@@ -353,15 +325,17 @@ const UIUpdater = {
 
     toggleLoading: (show) => {
         const el = document.getElementById('loadingOverlay');
-        show ? el.classList.remove('hidden') : el.classList.add('hidden');
+        if (el) show ? el.classList.remove('hidden') : el.classList.add('hidden');
     },
 
     showMessage: (type, msg) => {
         const el = document.getElementById('formMessage');
-        el.className = `alert ${type}`;
-        el.textContent = msg;
-        el.classList.remove('hidden');
-        setTimeout(() => el.classList.add('hidden'), 4000);
+        if (el) {
+            el.className = `alert ${type}`;
+            el.textContent = msg;
+            el.classList.remove('hidden');
+            setTimeout(() => el.classList.add('hidden'), 4000);
+        }
     }
 };
 
@@ -370,15 +344,20 @@ const ChartManager = {
         if (typeof Chart === 'undefined') return;
         const res = LOCALE_RESOURCES[currentLanguage];
         
-        // 1. Cashflow Chart
-        const ctxCF = document.getElementById('cashflowChart').getContext('2d');
-        if (charts.cashflow) charts.cashflow.destroy();
-        
+        // Helper to safely get context and destroy old chart
+        const initChart = (id, prevChart, config) => {
+            const el = document.getElementById(id);
+            if (!el) return null;
+            if (prevChart) prevChart.destroy();
+            return new Chart(el.getContext('2d'), config);
+        };
+
+        const labels = ['Start', ...Array.from({length: duration}, (_, i) => `M${i+1}`)];
         let cum = 0;
         const cumulative = exp.cashFlows.map(v => cum += v);
-        const labels = ['Start', ...Array.from({length: duration}, (_, i) => `M${i+1}`)];
 
-        charts.cashflow = new Chart(ctxCF, {
+        // 1. Cashflow
+        charts.cashflow = initChart('cashflowChart', charts.cashflow, {
             type: 'line',
             data: {
                 labels: labels,
@@ -390,10 +369,8 @@ const ChartManager = {
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#fff' } } }, scales: { x: { ticks: { color: '#ccc' }, grid: { color: '#333' } }, y: { ticks: { color: '#ccc' }, grid: { color: '#333' } } } }
         });
 
-        // 2. ROI Chart
-        const ctxROI = document.getElementById('roiChart').getContext('2d');
-        if (charts.roi) charts.roi.destroy();
-        charts.roi = new Chart(ctxROI, {
+        // 2. ROI
+        charts.roi = initChart('roiChart', charts.roi, {
             type: 'bar',
             data: {
                 labels: [res['scenario-expected'], res['scenario-best'], res['scenario-worst']],
@@ -402,10 +379,8 @@ const ChartManager = {
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#ccc' } }, y: { ticks: { color: '#ccc' } } } }
         });
 
-        // 3. Scenario Radar
-        const ctxRadar = document.getElementById('scenariosChart').getContext('2d');
-        if (charts.scenarios) charts.scenarios.destroy();
-        charts.scenarios = new Chart(ctxRadar, {
+        // 3. Radar
+        charts.scenarios = initChart('scenariosChart', charts.scenarios, {
             type: 'radar',
             data: {
                 labels: ['ROI', 'NPV (s)', 'Payback (inv)', 'IRR'],
@@ -420,13 +395,11 @@ const ChartManager = {
 };
 
 // ==========================================
-// 5. EVENT HANDLERS (The "Glue")
+// 5. EVENT HANDLERS & HELPERS
 // ==========================================
 
-// Helper to update form fields
 const updateFormText = (lang) => {
     const res = LOCALE_RESOURCES[lang];
-    // List of element IDs that match dictionary keys
     const textIds = [
         'header-title', 'header-subtitle', 'section-strategic', 'strategic-description',
         'section-dashboard', 'section-project-info', 'section-visual-analysis',
@@ -439,13 +412,11 @@ const updateFormText = (lang) => {
         'tab-cashflow', 'tab-roi', 'tab-scenarios', 'analysis-title'
     ];
     
-    // Update Text Content
     textIds.forEach(id => {
         const el = document.getElementById(id);
         if (el && res[id]) el.textContent = res[id];
     });
 
-    // Update Placeholders map (ID -> Key)
     const phMap = {
         'stratProjectName': 'ph-stratProjectName',
         'problemOpportunity': 'ph-problemOpportunity',
@@ -460,7 +431,6 @@ const updateFormText = (lang) => {
     });
 };
 
-// Global functions for HTML onclick events
 window.switchTab = function(tabName) {
     document.querySelectorAll('.tab').forEach(t => {
         t.classList.remove('border-cyan-500', 'text-slate-300');
@@ -468,19 +438,20 @@ window.switchTab = function(tabName) {
     });
     document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
     
-    // Activate clicked
-    event.target.classList.remove('border-transparent', 'text-slate-400');
-    event.target.classList.add('border-cyan-500', 'text-slate-300');
-    document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+    const active = document.getElementById(`${tabName}-tab`);
+    if (active) active.classList.remove('hidden');
+    
+    const btn = event?.target;
+    if (btn) {
+        btn.classList.remove('border-transparent', 'text-slate-400');
+        btn.classList.add('border-cyan-500', 'text-slate-300');
+    }
 };
 
 window.switchLanguage = function(lang) {
     currentLanguage = lang;
-    
-    // Update all text elements
     updateFormText(lang);
     
-    // Update Buttons State
     ['en', 'es', 'pt'].forEach(l => {
         const btn = document.getElementById(`lang-${l}`);
         if(btn) {
@@ -489,7 +460,6 @@ window.switchLanguage = function(lang) {
         }
     });
 
-    // Refresh charts/analysis if data exists to update localized labels
     if (projectData) document.getElementById('projectForm').dispatchEvent(new Event('submit'));
 };
 
@@ -529,6 +499,8 @@ window.resetForm = function() {
 
 window.exportToPDF = function() {
     if (!projectData) return alert('Analysis required / Requiere análisis');
+    if (typeof window.jspdf === 'undefined') return alert('PDF Library missing');
+    
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     doc.setFontSize(16);
@@ -539,35 +511,43 @@ window.exportToPDF = function() {
     doc.save(`Report_${projectData.projectName}.pdf`);
 };
 
-// Form Submissions
+// ==========================================
+// 6. MAIN LISTENERS (With Error Handling)
+// ==========================================
+
 document.getElementById('strategicForm')?.addEventListener('submit', function(e) {
     e.preventDefault();
     UIUpdater.toggleLoading(true);
     
     setTimeout(() => {
-        strategicData = {
-            projectName: document.getElementById('stratProjectName').value,
-            problem: document.getElementById('problemOpportunity').value,
-            solution: document.getElementById('proposedSolution').value,
-            metrics: document.getElementById('successMetrics').value
-        };
-        
-        const analysis = StrategicScorer.evaluate(strategicData);
-        
-        // Render Result
-        const resDiv = document.getElementById('analysisContent');
-        const isEs = currentLanguage === 'es';
-        resDiv.innerHTML = `
-            <div class="mb-4">
-                <h4 class="font-bold text-cyan-400">Score: ${analysis.score}/100</h4>
-                <div class="w-full bg-gray-700 h-2 rounded mt-2"><div class="bg-cyan-500 h-2 rounded" style="width:${analysis.score}%"></div></div>
-            </div>
-            <ul class="list-disc pl-5 mb-4">${analysis.strengths.map(s => `<li>${s}</li>`).join('')}</ul>
-            <p class="font-bold p-3 bg-slate-700 rounded border-l-4 border-emerald-500">${analysis.recommendation}</p>
-        `;
-        
-        document.getElementById('strategicAnalysisResult').classList.remove('hidden');
-        UIUpdater.toggleLoading(false);
+        try {
+            strategicData = {
+                projectName: document.getElementById('stratProjectName').value,
+                problem: document.getElementById('problemOpportunity').value,
+                solution: document.getElementById('proposedSolution').value,
+                metrics: document.getElementById('successMetrics').value
+            };
+            
+            const analysis = StrategicScorer.evaluate(strategicData);
+            
+            const resDiv = document.getElementById('analysisContent');
+            const isEs = currentLanguage === 'es';
+            resDiv.innerHTML = `
+                <div class="mb-4">
+                    <h4 class="font-bold text-cyan-400">Score: ${analysis.score}/100</h4>
+                    <div class="w-full bg-gray-700 h-2 rounded mt-2"><div class="bg-cyan-500 h-2 rounded" style="width:${analysis.score}%"></div></div>
+                </div>
+                <ul class="list-disc pl-5 mb-4">${analysis.strengths.map(s => `<li>${s}</li>`).join('')}</ul>
+                <p class="font-bold p-3 bg-slate-700 rounded border-l-4 border-emerald-500">${analysis.recommendation}</p>
+            `;
+            
+            document.getElementById('strategicAnalysisResult').classList.remove('hidden');
+        } catch (err) {
+            console.error(err);
+            alert("Error in calculation logic. Check console.");
+        } finally {
+            UIUpdater.toggleLoading(false);
+        }
     }, 1000);
 });
 
@@ -576,61 +556,65 @@ document.getElementById('projectForm')?.addEventListener('submit', function(e) {
     UIUpdater.toggleLoading(true);
 
     setTimeout(() => {
-        const val = (id) => parseFloat(document.getElementById(id).value) || 0;
-        
-        projectData = {
-            projectName: document.getElementById('projectName').value,
-            initialInvestment: val('initialInvestment'),
-            discountRate: val('discountRate'),
-            projectDuration: parseInt(document.getElementById('projectDuration').value) || 24,
-            yearlyRevenue: val('yearlyRevenue'),
-            revenueGrowth: val('revenueGrowth'),
-            operatingCosts: val('operatingCosts'),
-            maintenanceCosts: val('maintenanceCosts'),
-            bestCaseMultiplier: val('bestCaseMultiplier'),
-            worstCaseMultiplier: val('worstCaseMultiplier')
-        };
+        try {
+            const val = (id) => parseFloat(document.getElementById(id).value) || 0;
+            
+            projectData = {
+                projectName: document.getElementById('projectName').value,
+                initialInvestment: val('initialInvestment'),
+                discountRate: val('discountRate'),
+                projectDuration: parseInt(document.getElementById('projectDuration').value) || 24,
+                yearlyRevenue: val('yearlyRevenue'),
+                revenueGrowth: val('revenueGrowth'),
+                operatingCosts: val('operatingCosts'),
+                maintenanceCosts: val('maintenanceCosts'),
+                bestCaseMultiplier: val('bestCaseMultiplier'),
+                worstCaseMultiplier: val('worstCaseMultiplier')
+            };
 
-        const exp = FinanceEngine.analyze(projectData);
-        const best = FinanceEngine.analyze({...projectData, yearlyRevenue: projectData.yearlyRevenue * projectData.bestCaseMultiplier});
-        const worst = FinanceEngine.analyze({...projectData, yearlyRevenue: projectData.yearlyRevenue * projectData.worstCaseMultiplier});
+            const exp = FinanceEngine.analyze(projectData);
+            const best = FinanceEngine.analyze({...projectData, yearlyRevenue: projectData.yearlyRevenue * projectData.bestCaseMultiplier});
+            const worst = FinanceEngine.analyze({...projectData, yearlyRevenue: projectData.yearlyRevenue * projectData.worstCaseMultiplier});
 
-        UIUpdater.updateDashboard(exp);
-        UIUpdater.updateScenarios(exp, best, worst);
-        ChartManager.createCharts(exp, best, worst, projectData.projectDuration);
-        
-        // Simple Recommendation Render
-        const recDiv = document.getElementById('recommendations');
-        const isPos = exp.roi > 0;
-        recDiv.innerHTML = `
-            <div class="flex items-center gap-3 p-3 rounded ${isPos ? 'bg-emerald-500/20' : 'bg-red-500/20'}">
-                <span class="text-2xl">${isPos ? '✅' : '⚠️'}</span>
-                <p>${isPos ? (currentLanguage==='es'?'Proyecto viable financieramente.':'Financially viable project.') : (currentLanguage==='es'?'Revisar estructura de costos.':'Review cost structure.')}</p>
-            </div>
-        `;
+            UIUpdater.updateDashboard(exp);
+            UIUpdater.updateScenarios(exp, best, worst);
+            ChartManager.createCharts(exp, best, worst, projectData.projectDuration);
+            
+            const recDiv = document.getElementById('recommendations');
+            const isPos = exp.roi > 0;
+            recDiv.innerHTML = `
+                <div class="flex items-center gap-3 p-3 rounded ${isPos ? 'bg-emerald-500/20' : 'bg-red-500/20'}">
+                    <span class="text-2xl">${isPos ? '✅' : '⚠️'}</span>
+                    <p>${isPos ? (currentLanguage==='es'?'Proyecto viable financieramente.':'Financially viable project.') : (currentLanguage==='es'?'Revisar estructura de costos.':'Review cost structure.')}</p>
+                </div>
+            `;
+            
+            UIUpdater.showMessage('success', 'Analysis Complete');
+            document.getElementById('dashboard').scrollIntoView({behavior: 'smooth'});
 
-        UIUpdater.toggleLoading(false);
-        UIUpdater.showMessage('success', 'Analysis Complete');
-        document.getElementById('dashboard').scrollIntoView({behavior: 'smooth'});
+        } catch (err) {
+            console.error("Critical Engine Error:", err);
+            alert("Error in calculation engine: " + err.message);
+        } finally {
+            UIUpdater.toggleLoading(false);
+        }
     }, 600);
 });
 
-// Auto-run translation on load to ensure labels match default lang
+// Initialization
 window.addEventListener('load', () => {
     switchLanguage('es');
 });
 
-// Quality Assessment
+// Quality Assessment (Compatibility)
 const qualityAssessment = {
     assessField: (id, val) => {
         const len = val.length;
-        let score = Math.min(len, 100);
         const el = document.getElementById(`quality-${id}`);
         if(el) {
-            el.textContent = len > 20 ? (currentLanguage==='es'?'✓ Entrada válida':'✓ Valid input') : (currentLanguage==='es'?'...':'...');
+            el.textContent = len > 20 ? (currentLanguage==='es'?'✓ Entrada válida':'✓ Valid input') : '...';
             el.className = `field-quality show ${len > 20 ? 'good' : 'warning'}`;
         }
-        return score;
     }
 };
 
