@@ -543,4 +543,96 @@ document.getElementById('strategicForm')?.addEventListener('submit', function(e)
             resDiv.innerHTML = `
                 <div class="mb-4">
                     <h4 class="font-bold text-cyan-400">Score: ${analysis.score}/100</h4>
-                    <div class="w-full bg-gray-700 h-2 rounded mt-2"><div class="bg-cyan-500 h-
+                    <div class="w-full bg-gray-700 h-2 rounded mt-2"><div class="bg-cyan-500 h-2 rounded" style="width:${analysis.score}%"></div></div>
+                </div>
+                <ul class="list-disc pl-5 mb-4">${analysis.strengths.map(s => `<li>${s}</li>`).join('')}</ul>
+                <p class="font-bold p-3 bg-slate-700 rounded border-l-4 border-emerald-500">${analysis.recommendation}</p>
+            `;
+            
+            document.getElementById('strategicAnalysisResult').classList.remove('hidden');
+        } catch (err) {
+            console.error(err);
+            alert("Error in calculation logic. Check console.");
+        } finally {
+            UIUpdater.toggleLoading(false);
+        }
+    }, 1000);
+});
+
+document.getElementById('projectForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    UIUpdater.toggleLoading(true);
+
+    setTimeout(() => {
+        try {
+            const val = (id) => parseFloat(document.getElementById(id).value) || 0;
+            
+            projectData = {
+                projectName: document.getElementById('projectName').value,
+                initialInvestment: val('initialInvestment'),
+                discountRate: val('discountRate'),
+                projectDuration: parseInt(document.getElementById('projectDuration').value) || 24,
+                yearlyRevenue: val('yearlyRevenue'),
+                revenueGrowth: val('revenueGrowth'),
+                operatingCosts: val('operatingCosts'),
+                maintenanceCosts: val('maintenanceCosts'),
+                bestCaseMultiplier: val('bestCaseMultiplier'),
+                worstCaseMultiplier: val('worstCaseMultiplier')
+            };
+
+            const exp = FinanceEngine.analyze(projectData);
+            const best = FinanceEngine.analyze({...projectData, yearlyRevenue: projectData.yearlyRevenue * projectData.bestCaseMultiplier});
+            const worst = FinanceEngine.analyze({...projectData, yearlyRevenue: projectData.yearlyRevenue * projectData.worstCaseMultiplier});
+
+            UIUpdater.updateDashboard(exp);
+            UIUpdater.updateScenarios(exp, best, worst);
+            ChartManager.createCharts(exp, best, worst, projectData.projectDuration);
+            
+            const recDiv = document.getElementById('recommendations');
+            const isPos = exp.roi > 0;
+            recDiv.innerHTML = `
+                <div class="flex items-center gap-3 p-3 rounded ${isPos ? 'bg-emerald-500/20' : 'bg-red-500/20'}">
+                    <span class="text-2xl">${isPos ? '✅' : '⚠️'}</span>
+                    <p>${isPos ? (currentLanguage==='es'?'Proyecto viable financieramente.':'Financially viable project.') : (currentLanguage==='es'?'Revisar estructura de costos.':'Review cost structure.')}</p>
+                </div>
+            `;
+            
+            UIUpdater.showMessage('success', 'Analysis Complete');
+            document.getElementById('dashboard').scrollIntoView({behavior: 'smooth'});
+
+        } catch (err) {
+            console.error("Critical Engine Error:", err);
+            alert("Error in calculation engine: " + err.message);
+        } finally {
+            UIUpdater.toggleLoading(false);
+        }
+    }, 600);
+});
+
+// Initialization
+window.addEventListener('load', () => {
+    switchLanguage('es');
+});
+
+// Quality Assessment (Compatibility)
+const qualityAssessment = {
+    assessField: (id, val) => {
+        const len = val.length;
+        const el = document.getElementById(`quality-${id}`);
+        if(el) {
+            el.textContent = len > 20 ? (currentLanguage==='es'?'✓ Entrada válida':'✓ Valid input') : '...';
+            el.className = `field-quality show ${len > 20 ? 'good' : 'warning'}`;
+        }
+    }
+};
+
+['stratProjectName', 'problemOpportunity', 'proposedSolution', 'successMetrics'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('input', (e) => {
+        qualityAssessment.assessField(id, e.target.value);
+        const bar = document.getElementById('progress-fill');
+        const txt = document.getElementById('overall-score');
+        if(bar) bar.style.width = '75%';
+        if(txt) txt.textContent = '75/100';
+    });
+});
