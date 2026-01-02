@@ -13,11 +13,12 @@ let strategicData = null;
 let charts = { cashflow: null, roi: null, scenarios: null };
 
 // ==========================================
-// 2. LOCALIZATION RESOURCES
+// 2. LOCALIZATION RESOURCES (AUDITED)
 // ==========================================
 
 const LOCALE_RESOURCES = {
     en: {
+        // --- Structure & Headers ---
         'header-title': 'Business Case Analyzer Pro',
         'header-subtitle': 'Professional Financial Analysis & ROI Calculator',
         'section-strategic': 'Strategic Analysis',
@@ -28,6 +29,24 @@ const LOCALE_RESOURCES = {
         'section-scenarios': 'Scenario Comparison',
         'section-recommendations': 'Smart Recommendations',
         'section-export': 'Export Report',
+
+        // --- Subsections (Calculator) ---
+        'subsection-revenue': 'Revenue Projections',
+        'subsection-costs': 'Cost Projections',
+        'subsection-scenarios': 'Scenario Analysis',
+
+        // --- Metric Cards ---
+        'metric-label-roi': 'ROI (Return on Investment)',
+        'metric-label-npv': 'NPV (Net Present Value)',
+        'metric-label-payback': 'Payback Period',
+        'metric-label-irr': 'IRR (Internal Rate of Return)',
+        // Initial states
+        'roi-status': 'Enter data to calculate',
+        'npv-status': 'Discounted cash flow',
+        'payback-status': 'Months to recover investment',
+        'irr-status': 'Annualized return rate',
+
+        // --- Strategic Form ---
         'label-stratProjectName': 'Project Name',
         'ph-stratProjectName': 'e.g., AI-Powered Customer Support Automation',
         'label-problemOpportunity': 'Problem/Opportunity Identified',
@@ -36,6 +55,9 @@ const LOCALE_RESOURCES = {
         'ph-proposedSolution': 'e.g., Implement an AI triage agent for instant ticket classification...',
         'label-successMetrics': 'Success Metrics / ROI',
         'ph-successMetrics': 'e.g., Reduce classification time by 90% in Q1...',
+        'analysis-title': 'Strategic Analysis Result',
+
+        // --- Financial Form ---
         'label-projectName': 'Project Name',
         'ph-projectName': 'e.g., Digital Transformation',
         'label-initialInvestment': 'Initial Investment ($)',
@@ -47,30 +69,47 @@ const LOCALE_RESOURCES = {
         'label-maintenanceCosts': 'Annual Maintenance Costs ($)',
         'label-bestCaseMultiplier': 'Best Case Multiplier',
         'label-worstCaseMultiplier': 'Worst Case Multiplier',
+
+        // --- Scenario Cards ---
+        'title-expected': '📊 Expected Case',
+        'title-best': '🚀 Best Case',
+        'title-worst': '⚠️ Worst Case',
+        'label-expected-roi': 'ROI:', 'label-expected-npv': 'NPV:', 'label-expected-payback': 'Payback:',
+        'label-best-roi': 'ROI:', 'label-best-npv': 'NPV:', 'label-best-payback': 'Payback:',
+        'label-worst-roi': 'ROI:', 'label-worst-npv': 'NPV:', 'label-worst-payback': 'Payback:',
+
+        // --- Buttons & UI Elements ---
         'btn-generate-analysis': 'Generate Analysis',
         'btn-continue-financial': 'Continue to Financial Projection',
         'btn-back-step1': '← Back to Strategic Analysis',
         'btn-calculate': 'Calculate Analysis',
         'btn-reset': 'Reset Form',
         'btn-export': 'Export Full Report to PDF',
+        'export-description': 'Generate a comprehensive PDF report with all metrics, charts and recommendations.',
+        'default-recommendations': 'Complete the form and calculate to receive smart recommendations based on your business case.',
+        'progress-title': 'Business Case Quality Score',
+
+        // --- Tabs & Charts ---
         'tab-cashflow': 'Cash Flow Over Time',
         'tab-roi': 'ROI Comparison',
         'tab-scenarios': 'Scenario Analysis',
-        'status-positive-return': '✓ Positive Return',
-        'status-negative-return': '✗ Negative Return',
-        'status-creates-value': '✓ Creates Value',
-        'status-destroys-value': '✗ Destroys Value',
         'chart-monthly-cashflow': 'Net Monthly Flow',
         'chart-cumulative-cashflow': 'Cumulative Position',
         'scenario-expected': 'Base Case',
         'scenario-best': 'Upside Case',
         'scenario-worst': 'Downside Case',
         'unit-months': 'mo',
+
+        // --- Dynamic Status ---
+        'status-positive-return': '✓ Positive Return',
+        'status-negative-return': '✗ Negative Return',
+        'status-creates-value': '✓ Creates Value',
+        'status-destroys-value': '✗ Destroys Value',
         'viability-high': 'HIGH VIABILITY - Proceed to Financials',
-        'viability-review': 'REVIEW NEEDED - Refine Strategy',
-        'analysis-title': 'Strategic Analysis Result'
+        'viability-review': 'REVIEW NEEDED - Refine Strategy'
     },
     es: {
+        // --- Structure & Headers ---
         'header-title': 'Analizador de Casos de Negocio Pro',
         'header-subtitle': 'Análisis Financiero Profesional y Calculadora de ROI',
         'section-strategic': 'Análisis Estratégico',
@@ -81,6 +120,24 @@ const LOCALE_RESOURCES = {
         'section-scenarios': 'Comparación de Escenarios',
         'section-recommendations': 'Recomendaciones Inteligentes',
         'section-export': 'Exportar Reporte',
+
+        // --- Subsections (Calculator) ---
+        'subsection-revenue': 'Proyección de Ingresos',
+        'subsection-costs': 'Proyección de Costos',
+        'subsection-scenarios': 'Análisis de Escenarios',
+
+        // --- Metric Cards ---
+        'metric-label-roi': 'ROI (Retorno de Inversión)',
+        'metric-label-npv': 'VPN (Valor Presente Neto)',
+        'metric-label-payback': 'Período de Recuperación',
+        'metric-label-irr': 'TIR (Tasa Interna de Retorno)',
+        // Initial states
+        'roi-status': 'Ingrese datos para calcular',
+        'npv-status': 'Flujo de caja descontado',
+        'payback-status': 'Meses para recuperar inversión',
+        'irr-status': 'Tasa de retorno anualizada',
+
+        // --- Strategic Form ---
         'label-stratProjectName': 'Nombre del Proyecto',
         'ph-stratProjectName': 'ej., Automatización de soporte al cliente basada en IA',
         'label-problemOpportunity': 'Problema/Oportunidad',
@@ -89,6 +146,9 @@ const LOCALE_RESOURCES = {
         'ph-proposedSolution': 'ej., Implementar un agente de clasificación de tickets basado en IA...',
         'label-successMetrics': 'Métricas de Éxito / ROI',
         'ph-successMetrics': 'ej., Reducir el tiempo de clasificación en un 90% en Q1...',
+        'analysis-title': 'Resultado del Análisis Estratégico',
+
+        // --- Financial Form ---
         'label-projectName': 'Nombre del Proyecto',
         'ph-projectName': 'ej., Transformación Digital',
         'label-initialInvestment': 'Inversión Inicial ($)',
@@ -100,30 +160,47 @@ const LOCALE_RESOURCES = {
         'label-maintenanceCosts': 'Costos Mantenimiento Anuales ($)',
         'label-bestCaseMultiplier': 'Multiplicador Mejor Caso',
         'label-worstCaseMultiplier': 'Multiplicador Peor Caso',
+
+        // --- Scenario Cards ---
+        'title-expected': '📊 Caso Esperado',
+        'title-best': '🚀 Caso Optimista',
+        'title-worst': '⚠️ Caso Pesimista',
+        'label-expected-roi': 'ROI:', 'label-expected-npv': 'VPN:', 'label-expected-payback': 'Recup.:',
+        'label-best-roi': 'ROI:', 'label-best-npv': 'VPN:', 'label-best-payback': 'Recup.:',
+        'label-worst-roi': 'ROI:', 'label-worst-npv': 'VPN:', 'label-worst-payback': 'Recup.:',
+
+        // --- Buttons & UI Elements ---
         'btn-generate-analysis': 'Generar Análisis',
         'btn-continue-financial': 'Continuar a Proyección Financiera',
         'btn-back-step1': '← Volver a Análisis Estratégico',
         'btn-calculate': 'Calcular Análisis',
         'btn-reset': 'Reiniciar Formulario',
         'btn-export': 'Exportar Reporte PDF',
+        'export-description': 'Genere un reporte PDF completo con todas las métricas, gráficos y recomendaciones.',
+        'default-recommendations': 'Complete el formulario y calcule para recibir recomendaciones inteligentes basadas en su análisis.',
+        'progress-title': 'Puntaje de Calidad del Caso',
+
+        // --- Tabs & Charts ---
         'tab-cashflow': 'Flujo de Caja en el Tiempo',
         'tab-roi': 'Comparación de ROI',
         'tab-scenarios': 'Análisis de Escenarios',
-        'status-positive-return': '✓ Retorno Positivo',
-        'status-negative-return': '✗ Retorno Negativo',
-        'status-creates-value': '✓ Genera Valor',
-        'status-destroys-value': '✗ Destruye Valor',
         'chart-monthly-cashflow': 'Flujo Mensual Neto',
         'chart-cumulative-cashflow': 'Posición Acumulada',
         'scenario-expected': 'Caso Base',
         'scenario-best': 'Caso Optimista',
         'scenario-worst': 'Caso Pesimista',
         'unit-months': 'meses',
+
+        // --- Dynamic Status ---
+        'status-positive-return': '✓ Retorno Positivo',
+        'status-negative-return': '✗ Retorno Negativo',
+        'status-creates-value': '✓ Genera Valor',
+        'status-destroys-value': '✗ Destruye Valor',
         'viability-high': 'ALTA VIABILIDAD - Proceder a Financiero',
-        'viability-review': 'REVISIÓN REQUERIDA - Refinar Estrategia',
-        'analysis-title': 'Resultado del Análisis Estratégico'
+        'viability-review': 'REVISIÓN REQUERIDA - Refinar Estrategia'
     },
     pt: {
+        // --- Structure & Headers ---
         'header-title': 'Analisador de Casos de Negócio Pro',
         'header-subtitle': 'Análise Financeira Profissional e Calculadora de ROI',
         'section-strategic': 'Análise Estratégica',
@@ -134,6 +211,24 @@ const LOCALE_RESOURCES = {
         'section-scenarios': 'Comparação de Cenários',
         'section-recommendations': 'Recomendações Inteligentes',
         'section-export': 'Exportar Relatório',
+
+        // --- Subsections (Calculator) ---
+        'subsection-revenue': 'Projeção de Receita',
+        'subsection-costs': 'Projeção de Custos',
+        'subsection-scenarios': 'Análise de Cenários',
+
+        // --- Metric Cards ---
+        'metric-label-roi': 'ROI (Retorno sobre Investimento)',
+        'metric-label-npv': 'VPL (Valor Presente Líquido)',
+        'metric-label-payback': 'Payback',
+        'metric-label-irr': 'TIR (Taxa Interna de Retorno)',
+        // Initial states
+        'roi-status': 'Insira dados para calcular',
+        'npv-status': 'Fluxo de caixa descontado',
+        'payback-status': 'Meses para recuperar investimento',
+        'irr-status': 'Taxa de retorno anualizada',
+
+        // --- Strategic Form ---
         'label-stratProjectName': 'Nome do Projeto',
         'ph-stratProjectName': 'ex., Automação de suporte ao cliente',
         'label-problemOpportunity': 'Problema/Oportunidade',
@@ -142,6 +237,9 @@ const LOCALE_RESOURCES = {
         'ph-proposedSolution': 'ex., Implementar um agente de triagem...',
         'label-successMetrics': 'Métricas de Sucesso / ROI',
         'ph-successMetrics': 'ex., Reduzir o tempo de classificação em 90%...',
+        'analysis-title': 'Resultado da Análise Estratégica',
+
+        // --- Financial Form ---
         'label-projectName': 'Nome do Projeto',
         'ph-projectName': 'ex., Transformação Digital',
         'label-initialInvestment': 'Investimento Inicial ($)',
@@ -153,28 +251,44 @@ const LOCALE_RESOURCES = {
         'label-maintenanceCosts': 'Custos de Manutenção ($)',
         'label-bestCaseMultiplier': 'Multiplicador Melhor Caso',
         'label-worstCaseMultiplier': 'Multiplicador Pior Caso',
+
+        // --- Scenario Cards ---
+        'title-expected': '📊 Caso Esperado',
+        'title-best': '🚀 Caso Otimista',
+        'title-worst': '⚠️ Caso Pessimista',
+        'label-expected-roi': 'ROI:', 'label-expected-npv': 'VPL:', 'label-expected-payback': 'Payback:',
+        'label-best-roi': 'ROI:', 'label-best-npv': 'VPL:', 'label-best-payback': 'Payback:',
+        'label-worst-roi': 'ROI:', 'label-worst-npv': 'VPL:', 'label-worst-payback': 'Payback:',
+
+        // --- Buttons & UI Elements ---
         'btn-generate-analysis': 'Gerar Análise',
         'btn-continue-financial': 'Continuar para Financeiro',
         'btn-back-step1': '← Voltar para Estratégico',
         'btn-calculate': 'Calcular Análise',
         'btn-reset': 'Redefinir Formulário',
         'btn-export': 'Exportar Relatório PDF',
+        'export-description': 'Gere um relatório PDF completo com todas as métricas, gráficos e recomendações.',
+        'default-recommendations': 'Preencha o formulário e calcule para receber recomendações inteligentes.',
+        'progress-title': 'Pontuação de Qualidade',
+
+        // --- Tabs & Charts ---
         'tab-cashflow': 'Fluxo de Caixa',
         'tab-roi': 'Comparação de ROI',
         'tab-scenarios': 'Análise de Cenários',
-        'status-positive-return': '✓ Retorno Positivo',
-        'status-negative-return': '✗ Retorno Negativo',
-        'status-creates-value': '✓ Gera Valor',
-        'status-destroys-value': '✗ Destrói Valor',
         'chart-monthly-cashflow': 'Fluxo Mensual Líquido',
         'chart-cumulative-cashflow': 'Posição Acumulada',
         'scenario-expected': 'Caso Base',
         'scenario-best': 'Caso Otimista',
         'scenario-worst': 'Caso Pessimista',
         'unit-months': 'meses',
+
+        // --- Dynamic Status ---
+        'status-positive-return': '✓ Retorno Positivo',
+        'status-negative-return': '✗ Retorno Negativo',
+        'status-creates-value': '✓ Gera Valor',
+        'status-destroys-value': '✗ Destrói Valor',
         'viability-high': 'ALTA VIABILIDADE - Prosseguir',
-        'viability-review': 'REVISÃO NECESSÁRIA - Refinar',
-        'analysis-title': 'Resultado da Análise Estratégica'
+        'viability-review': 'REVISÃO NECESSÁRIA - Refinar'
     }
 };
 
@@ -344,19 +458,12 @@ const ChartManager = {
         if (typeof Chart === 'undefined') return;
         const res = LOCALE_RESOURCES[currentLanguage];
         
-        // Helper to safely get context and destroy old chart
-        // FIX: Force check using Chart.getChart to prevent "Canvas is already in use"
         const initChart = (id, prevChart, config) => {
             const el = document.getElementById(id);
             if (!el) return null;
-            
-            // Check for existing instance on DOM element
             const existing = Chart.getChart(id);
             if (existing) existing.destroy();
-            
-            // Check for previous instance in state
             if (prevChart && prevChart.destroy) prevChart.destroy();
-            
             return new Chart(el.getContext('2d'), config);
         };
 
@@ -408,23 +515,50 @@ const ChartManager = {
 
 const updateFormText = (lang) => {
     const res = LOCALE_RESOURCES[lang];
+    // List of ALL dynamic IDs in the HTML
     const textIds = [
+        // Structural
         'header-title', 'header-subtitle', 'section-strategic', 'strategic-description',
         'section-dashboard', 'section-project-info', 'section-visual-analysis',
         'section-scenarios', 'section-recommendations', 'section-export',
+        
+        // Calculator Subsections
+        'subsection-revenue', 'subsection-costs', 'subsection-scenarios',
+        
+        // Metric Cards (Labels & Default States)
+        'metric-label-roi', 'metric-label-npv', 'metric-label-payback', 'metric-label-irr',
+        'roi-status', 'npv-status', 'payback-status', 'irr-status',
+
+        // Strategic Inputs
         'label-stratProjectName', 'label-problemOpportunity', 'label-proposedSolution', 'label-successMetrics',
+        'analysis-title', 'progress-title',
+
+        // Financial Inputs
         'label-projectName', 'label-initialInvestment', 'label-discountRate', 'label-projectDuration',
         'label-yearlyRevenue', 'label-revenueGrowth', 'label-operatingCosts', 'label-maintenanceCosts',
         'label-bestCaseMultiplier', 'label-worstCaseMultiplier',
+        
+        // Scenario Cards
+        'title-expected', 'title-best', 'title-worst',
+        'label-expected-roi', 'label-expected-npv', 'label-expected-payback',
+        'label-best-roi', 'label-best-npv', 'label-best-payback',
+        'label-worst-roi', 'label-worst-npv', 'label-worst-payback',
+
+        // Footer & Extras
+        'export-description', 'default-recommendations',
+
+        // Buttons & Tabs
         'btn-generate-analysis', 'btn-continue-financial', 'btn-back-step1', 'btn-calculate', 'btn-reset', 'btn-export',
-        'tab-cashflow', 'tab-roi', 'tab-scenarios', 'analysis-title'
+        'tab-cashflow', 'tab-roi', 'tab-scenarios'
     ];
     
+    // Update Text Content
     textIds.forEach(id => {
         const el = document.getElementById(id);
         if (el && res[id]) el.textContent = res[id];
     });
 
+    // Update Placeholders
     const phMap = {
         'stratProjectName': 'ph-stratProjectName',
         'problemOpportunity': 'ph-problemOpportunity',
@@ -432,7 +566,6 @@ const updateFormText = (lang) => {
         'successMetrics': 'ph-successMetrics',
         'projectName': 'ph-projectName'
     };
-    
     Object.keys(phMap).forEach(id => {
         const el = document.getElementById(id);
         if (el && res[phMap[id]]) el.placeholder = res[phMap[id]];
@@ -468,6 +601,7 @@ window.switchLanguage = function(lang) {
         }
     });
 
+    // Re-render analysis/charts if data exists to update localized labels inside them
     if (projectData) document.getElementById('projectForm').dispatchEvent(new Event('submit'));
 };
 
@@ -520,7 +654,7 @@ window.exportToPDF = function() {
 };
 
 // ==========================================
-// 6. MAIN LISTENERS (With Error Handling)
+// 6. MAIN LISTENERS
 // ==========================================
 
 document.getElementById('strategicForm')?.addEventListener('submit', function(e) {
