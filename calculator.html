@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Case Analyzer Pro - Professional Financial Analysis Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .glow-cyan {
+            box-shadow: 0 20px 60px rgba(6, 182, 212, 0.4), 0 0 100px rgba(6, 182, 212, 0.2);
+        }
+        .glow-emerald {
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-white">
+    <!-- Header with Language Selector -->
+    <header class="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 id="header-title" class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Business Case Analyzer Pro</h1>
+                    <p id="header-subtitle" class="text-sm text-slate-400">Professional Financial Analysis & ROI Calculator</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="switchLanguage('en')" id="lang-en" class="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700 hover:border-cyan-500 transition-all text-sm font-medium">EN</button>
+                    <button onclick="switchLanguage('es')" id="lang-es" class="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700 hover:border-cyan-500 transition-all text-sm font-medium">ES</button>
+                    <button onclick="switchLanguage('pt')" id="lang-pt" class="px-4 py-2 rounded-lg bg-slate-800/50 border border-slate-700 hover:border-cyan-500 transition-all text-sm font-medium">PT</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8 relative z-10">
+        <!-- Background Grid -->
+        <div class="fixed inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20 pointer-events-none"></div>
+        
+        <!-- STEP 1: Strategic Module -->
+        <div id="step1-strategic-module" style="display: block;" class="relative">
+            <section class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 mb-8">
+                <h2 id="section-strategic" class="text-3xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Strategic Analysis</h2>
+                <p id="strategic-description" class="text-slate-400 mb-8">
+                    Start by defining the strategic foundation of your business case. Our AI will analyze the viability and provide insights.
+                </p>
+                
+                <form id="strategicForm" class="space-y-6">
+                    <div>
+                        <label for="stratProjectName" class="block text-sm font-medium text-slate-300 mb-2">
+                            <span id="label-stratProjectName">Project Name</span> *
+                            <span class="help-icon cursor-pointer ml-2" onclick="showGuideModal('projectName')" title="Click for detailed guidance">💡</span>
+                        </label>
+                        <input type="text" id="stratProjectName" placeholder="e.g., AI-Powered Customer Support Automation" required class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all">
+                        <div class="field-quality mt-2" id="quality-stratProjectName"></div>
+                    </div>
+                    
+                    <div>
+                        <label for="problemOpportunity" class="block text-sm font-medium text-slate-300 mb-2">
+                            <span id="label-problemOpportunity">Problem/Opportunity Identified</span> *
+                            <span class="help-icon cursor-pointer ml-2" onclick="showGuideModal('problemOpportunity')" title="Click for detailed guidance">💡</span>
+                        </label>
+                        <textarea id="problemOpportunity" rows="4" placeholder="e.g., Our support team spends 10 hours/week manually classifying tickets, causing 4-hour delays and 15% customer dissatisfaction..." required class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all resize-none"></textarea>
+                        <div class="field-quality mt-2" id="quality-problemOpportunity"></div>
+                    </div>
+                    
+                    <div>
+                        <label for="proposedSolution" class="block text-sm font-medium text-slate-300 mb-2">
+                            <span id="label-proposedSolution">Proposed Solution (with or without AI)</span> *
+                            <span class="help-icon cursor-pointer ml-2" onclick="showGuideModal('proposedSolution')" title="Click for detailed guidance">💡</span>
+                        </label>
+                        <textarea id="proposedSolution" rows="4" placeholder="e.g., Implement an AI triage agent for instant ticket classification. Phase 1: Auto-categorization and priority assessment. Out of scope: Automated responses..." required class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all resize-none"></textarea>
+                        <div class="field-quality mt-2" id="quality-proposedSolution"></div>
+                    </div>
+                    
+                    <div>
+                        <label for="successMetrics" class="block text-sm font-medium text-slate-300 mb-2">
+                            <span id="label-successMetrics">Success Metrics / ROI</span> *
+                            <span class="help-icon cursor-pointer ml-2" onclick="showGuideModal('successMetrics')" title="Click for detailed guidance">💡</span>
+                        </label>
+                        <textarea id="successMetrics" rows="3" placeholder="e.g., Reduce classification time by 90% in Q1 (10h to 1h/week), decrease first response time by 50%, improve satisfaction by 5 points..." required class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all resize-none"></textarea>
+                        <div class="field-quality mt-2" id="quality-successMetrics"></div>
+                    </div>
+                    
+                    <!-- Overall Progress Indicator -->
+                    <div class="p-6 bg-slate-800/50 border border-slate-700 rounded-xl">
+                        <div class="flex justify-between items-center mb-3">
+                            <span id="progress-title" class="text-sm font-medium text-slate-300">Business Case Quality Score</span>
+                            <span class="progress-score font-mono text-lg font-bold text-cyan-400" id="overall-score">0/100</span>
+                        </div>
+                        <div class="w-full bg-slate-700 rounded-full h-3 overflow-hidden">
+                            <div class="progress-fill h-full bg-gradient-to-r from-cyan-500 to-blue-600 transition-all duration-500" id="progress-fill" style="width: 0%;"></div>
+                        </div>
+                        <div class="progress-checklist mt-4 space-y-2 text-sm text-slate-400" id="progress-checklist"></div>
+                    </div>
+                    
+                    <div class="flex gap-4">
+                        <button type="submit" class="flex-1 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition-all" id="btn-generate-analysis">
+                            Generate Analysis
+                        </button>
+                    </div>
+                </form>
+                
+                <div id="strategicAnalysisResult" class="strategic-result hidden mt-8 p-6 bg-slate-800/50 border border-slate-700 rounded-xl">
+                    <h3 id="analysis-title" class="text-2xl font-bold mb-4 text-emerald-400">Strategic Analysis Result</h3>
+                    <div class="analysis-content text-slate-300" id="analysisContent">
+                        <!-- Analysis will be displayed here -->
+                    </div>
+                    <div class="mt-6">
+                        <button type="button" class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition-all" onclick="goToStep2()" id="btn-continue-financial">
+                            Continue to Financial Projection
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- STEP 2: Financial Calculator Module -->
+        <div id="step2-financial-module" style="display: none;" class="relative">
+            <!-- Back Button -->
+            <div class="mb-8">
+                <button type="button" class="px-6 py-3 bg-slate-800/50 border border-slate-700 rounded-lg font-semibold hover:border-slate-600 transition-all" onclick="goToStep1()" id="btn-back-step1">
+                    ← Back to Strategic Analysis
+                </button>
+            </div>
+
+            <!-- Dashboard with Key Metrics -->
+            <section class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 mb-8">
+                <h2 id="section-dashboard" class="text-3xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Financial Dashboard</h2>
+                <div id="dashboard" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="p-6 bg-emerald-500/10 border border-emerald-500/30 rounded-xl">
+                        <div class="metric-label text-sm text-slate-400 mb-2" id="metric-label-roi">ROI (Return on Investment)</div>
+                        <div class="metric-value text-3xl font-bold font-mono text-emerald-400 mb-1" id="roi-value">0%</div>
+                        <div class="metric-change text-xs text-slate-500" id="roi-status">Enter data to calculate</div>
+                    </div>
+                    <div class="p-6 bg-cyan-500/10 border border-cyan-500/30 rounded-xl">
+                        <div class="metric-label text-sm text-slate-400 mb-2" id="metric-label-npv">NPV (Net Present Value)</div>
+                        <div class="metric-value text-3xl font-bold font-mono text-cyan-400 mb-1" id="npv-value">$0</div>
+                        <div class="metric-change text-xs text-slate-500" id="npv-status">Discounted cash flow</div>
+                    </div>
+                    <div class="p-6 bg-blue-500/10 border border-blue-500/30 rounded-xl">
+                        <div class="metric-label text-sm text-slate-400 mb-2" id="metric-label-payback">Payback Period</div>
+                        <div class="metric-value text-3xl font-bold font-mono text-blue-400 mb-1" id="payback-value">0</div>
+                        <div class="metric-change text-xs text-slate-500" id="payback-status">months to recover investment</div>
+                    </div>
+                    <div class="p-6 bg-purple-500/10 border border-purple-500/30 rounded-xl">
+                        <div class="metric-label text-sm text-slate-400 mb-2" id="metric-label-irr">IRR (Internal Rate of Return)</div>
+                        <div class="metric-value text-3xl font-bold font-mono text-purple-400 mb-1" id="irr-value">0%</div>
+                        <div class="metric-change text-xs text-slate-500" id="irr-status">Annualized return rate</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Project Data Entry Form -->
+        <section class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 mb-8">
+            <h2 id="section-project-info" class="text-3xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Project Information</h2>
+            <form id="projectForm" class="space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="projectName" class="block text-sm font-medium text-slate-300 mb-2"><span id="label-projectName">Nombre del Proyecto</span> *</label>
+                        <input type="text" id="projectName" placeholder="ej., Transformación Digital" required class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all">
+                    </div>
+                    <div>
+                        <label for="initialInvestment" class="block text-sm font-medium text-slate-300 mb-2"><span id="label-initialInvestment">Inversión Inicial ($)</span> *</label>
+                        <input type="number" id="initialInvestment" placeholder="100000" min="0" step="any" required class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all">
+                    </div>
+                    <div>
+                        <label for="discountRate" class="block text-sm font-medium text-slate-300 mb-2"><span id="label-discountRate">Tasa de Descuento (%)</span> * <span class="tooltip-icon cursor-pointer" title="Tasa utilizada para descontar flujos futuros al valor presente">ℹ️</span></label>
+                        <input type="number" id="discountRate" placeholder="10" min="0" max="100" step="0.1" value="10" required class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all">
+                    </div>
+                    <div>
+                        <label for="projectDuration" class="block text-sm font-medium text-slate-300 mb-2"><span id="label-projectDuration">Duración del Proyecto (meses)</span> *</label>
+                        <input type="number" id="projectDuration" placeholder="24" min="1" max="120" value="24" required class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all">
+                    </div>
+                </div>
+
+                <h3 id="subsection-revenue" class="text-xl font-bold text-emerald-400 mt-8 mb-4">Revenue Projections</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="yearlyRevenue" class="block text-sm font-medium text-slate-300 mb-2"><span id="label-yearlyRevenue">Incremento de Ingresos Anuales ($)</span> * <span class="tooltip-icon cursor-pointer" title="Aumento esperado en ingresos cada año">ℹ️</span></label>
+                        <input type="number" id="yearlyRevenue" placeholder="50000" min="0" step="any" required class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all">
+                    </div>
+                    <div>
+                        <label for="revenueGrowth" class="block text-sm font-medium text-slate-300 mb-2"><span id="label-revenueGrowth">Tasa de Crecimiento de Ingresos (% anual)</span> <span class="tooltip-icon cursor-pointer" title="Porcentaje de crecimiento anual de ingresos">ℹ️</span></label>
+                        <input type="number" id="revenueGrowth" placeholder="5" min="0" max="100" step="0.1" value="0" class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all">
+                    </div>
+                </div>
+
+                <h3 id="subsection-costs" class="text-xl font-bold text-blue-400 mt-8 mb-4">Cost Projections</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="operatingCosts" class="block text-sm font-medium text-slate-300 mb-2"><span id="label-operatingCosts">Costos Operativos Anuales ($)</span> <span class="tooltip-icon cursor-pointer" title="Gastos recurrentes de operación">ℹ️</span></label>
+                        <input type="number" id="operatingCosts" placeholder="20000" min="0" step="any" value="0" class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all">
+                    </div>
+                    <div>
+                        <label for="maintenanceCosts" class="block text-sm font-medium text-slate-300 mb-2"><span id="label-maintenanceCosts">Costos de Mantenimiento Anuales ($)</span> <span class="tooltip-icon cursor-pointer" title="Gastos anuales de mantenimiento">ℹ️</span></label>
+                        <input type="number" id="maintenanceCosts" placeholder="5000" min="0" step="any" value="0" class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all">
+                    </div>
+                </div>
+
+                <h3 id="subsection-scenarios" class="text-xl font-bold text-purple-400 mt-8 mb-4">Scenario Analysis</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="bestCaseMultiplier" class="block text-sm font-medium text-slate-300 mb-2"><span id="label-bestCaseMultiplier">Multiplicador Mejor Caso</span> <span class="tooltip-icon cursor-pointer" title="Factor optimista para escenarios favorables">ℹ️</span></label>
+                        <input type="number" id="bestCaseMultiplier" placeholder="1.3" min="1" max="3" step="0.1" value="1.3" class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all">
+                    </div>
+                    <div>
+                        <label for="worstCaseMultiplier" class="block text-sm font-medium text-slate-300 mb-2"><span id="label-worstCaseMultiplier">Multiplicador Peor Caso</span> <span class="tooltip-icon cursor-pointer" title="Factor pesimista para escenarios adversos">ℹ️</span></label>
+                        <input type="number" id="worstCaseMultiplier" placeholder="0.7" min="0.1" max="1" step="0.1" value="0.7" class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all">
+                    </div>
+                </div>
+
+                <div class="flex gap-4 mt-8">
+                    <button type="submit" class="flex-1 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition-all" id="btn-calculate">
+                        Calculate Analysis
+                    </button>
+                    <button type="button" class="px-6 py-3 bg-slate-800/50 border border-slate-700 rounded-lg font-semibold hover:border-slate-600 transition-all" onclick="resetForm()" id="btn-reset">
+                        Reset Form
+                    </button>
+                </div>
+            </form>
+            <div id="formMessage" class="hidden mt-4 p-4 rounded-lg"></div>
+        </section>
+
+        <!-- Charts Section with Tabs -->
+        <section class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 mb-8">
+            <h2 id="section-visual-analysis" class="text-3xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Visual Analysis</h2>
+            <div class="flex gap-2 mb-6 border-b border-slate-700">
+                <button id="tab-cashflow" class="tab px-6 py-3 font-medium text-slate-300 border-b-2 border-cyan-500" onclick="switchTab('cashflow')">Flujo de Caja en el Tiempo</button>
+                <button id="tab-roi" class="tab px-6 py-3 font-medium text-slate-400 border-b-2 border-transparent hover:border-slate-600 transition-all" onclick="switchTab('roi')">Comparación de ROI</button>
+                <button id="tab-scenarios" class="tab px-6 py-3 font-medium text-slate-400 border-b-2 border-transparent hover:border-slate-600 transition-all" onclick="switchTab('scenarios')">Análisis de Escenarios</button>
+            </div>
+
+            <div id="cashflow-tab" class="tab-content">
+                <div class="p-4 bg-slate-900/50 rounded-xl">
+                    <canvas id="cashflowChart"></canvas>
+                </div>
+            </div>
+
+            <div id="roi-tab" class="tab-content hidden">
+                <div class="p-4 bg-slate-900/50 rounded-xl">
+                    <canvas id="roiChart"></canvas>
+                </div>
+            </div>
+
+            <div id="scenarios-tab" class="tab-content hidden">
+                <div class="p-4 bg-slate-900/50 rounded-xl">
+                    <canvas id="scenariosChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scenario Comparison Cards -->
+        <section class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 mb-8">
+            <h2 id="section-scenarios" class="text-3xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Scenario Comparison</h2>
+            <div class="grid md:grid-cols-3 gap-6" id="scenarioGrid">
+                <div class="p-6 bg-cyan-500/10 border border-cyan-500/30 rounded-xl">
+                    <div class="text-xl font-bold mb-4 text-cyan-400" id="title-expected">📊 Expected Case</div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-slate-400" id="label-expected-roi">ROI:</span>
+                            <strong class="font-mono text-white" id="expected-roi">0%</strong>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400" id="label-expected-npv">NPV:</span>
+                            <strong class="font-mono text-white" id="expected-npv">$0</strong>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400" id="label-expected-payback">Payback:</span>
+                            <strong class="font-mono text-white" id="expected-payback">0 months</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-emerald-500/10 border border-emerald-500/30 rounded-xl">
+                    <div class="text-xl font-bold mb-4 text-emerald-400" id="title-best">🚀 Best Case</div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-slate-400" id="label-best-roi">ROI:</span>
+                            <strong class="font-mono text-white" id="best-roi">0%</strong>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400" id="label-best-npv">NPV:</span>
+                            <strong class="font-mono text-white" id="best-npv">$0</strong>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400" id="label-best-payback">Payback:</span>
+                            <strong class="font-mono text-white" id="best-payback">0 months</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-red-500/10 border border-red-500/30 rounded-xl">
+                    <div class="text-xl font-bold mb-4 text-red-400" id="title-worst">⚠️ Worst Case</div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-slate-400" id="label-worst-roi">ROI:</span>
+                            <strong class="font-mono text-white" id="worst-roi">0%</strong>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400" id="label-worst-npv">NPV:</span>
+                            <strong class="font-mono text-white" id="worst-npv">$0</strong>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400" id="label-worst-payback">Payback:</span>
+                            <strong class="font-mono text-white" id="worst-payback">0 months</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Smart Recommendations -->
+        <section class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 mb-8">
+            <h2 id="section-recommendations" class="text-3xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Smart Recommendations</h2>
+            <div class="text-slate-400" id="recommendations">
+                <p id="default-recommendations">Complete el formulario y calcule para recibir recomendaciones inteligentes basadas en su análisis de caso de negocio.</p>
+            </div>
+        </section>
+
+            <!-- Export Options -->
+            <section class="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 mb-8 text-center">
+                <h2 id="section-export" class="text-3xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Export Report</h2>
+                <p id="export-description" class="text-slate-400 mb-6">Generate a comprehensive PDF report with all metrics, charts and recommendations.</p>
+                <button class="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all" onclick="exportToPDF()" id="btn-export">
+                    Export Full Report to PDF
+                </button>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-16 px-6 bg-black border-t border-slate-800">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="text-center md:text-left">
+                    <h3 class="text-xl font-bold mb-2 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Vanguard Crux</h3>
+                    <p class="text-slate-400">Algorithmic financial strategy for modern enterprises</p>
+                </div>
+                
+                <div class="flex gap-4">
+                    <a href="index.html" class="px-6 py-3 bg-slate-800/50 backdrop-blur-md border border-slate-700 rounded-lg font-semibold hover:border-slate-600 transition-all">
+                        View Case Study →
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mt-12 pt-8 border-t border-slate-800 text-center">
+                <p class="text-emerald-500 text-sm">© 2024 Vanguard Crux. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
+        <div class="loading-spinner w-16 h-16 border-4 border-slate-700 border-t-cyan-500 rounded-full animate-spin"></div>
+    </div>
+
+    <!-- Guide Modal -->
+    <div id="guideModal" class="modal hidden fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-2xl font-bold text-cyan-400" id="modal-title"></h3>
+                    <button class="text-slate-400 hover:text-white text-3xl leading-none" onclick="closeGuideModal()">&times;</button>
+                </div>
+                <div class="text-slate-300" id="modal-body"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
