@@ -207,7 +207,7 @@ This project is open source and available for educational and commercial use.
 
 ## 👨‍💻 Author
 
-Created as part of the Academy Projects collection.
+Created by Jon Flores.
 
 ---
 
